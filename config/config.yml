@@ -1,0 +1,17 @@
+---
+defaults: &defaults
+  connection:
+    zookeeper: "kafka.dev:2128"
+    kafka: "kafka.dev:9092"
+    timeout_in_ms: 500
+
+  kafka:
+    topic: "barcode-warehouse-receiving"
+
+development:
+  <<: *defaults
+  kafka:
+    topic: "dev-barcode-warehouse-receiving"
+
+production:
+  <<: *defaults
