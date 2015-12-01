@@ -1,8 +1,8 @@
 module Producer; end
 
 class Producer::KafkaProducer
-  java_import 'org.apache.kafka.clients.producer.ProducerRecord'
-  java_import 'java.util.concurrent.TimeUnit'
+  java_import org.apache.kafka.clients.producer.ProducerRecord
+  java_import java.util.concurrent.TimeUnit
 
   KAFKA_PRODUCER = Java::org.apache.kafka.clients.producer.KafkaProducer
 
@@ -14,8 +14,10 @@ class Producer::KafkaProducer
   KNOWN_OPTIONS = %w[
     acks
     bootstrap.servers
+    compression.type
     key.serializer
     retries
+    linger.ms
     value.serializer
     serializer.class
   ]
@@ -26,6 +28,7 @@ class Producer::KafkaProducer
     @options = producer_options.dup
     @options['acks'] = '1'
     @options['retries'] = '0'
+    @options['linger.ms'] = '1'
     @options['key.serializer'] = 'org.apache.kafka.common.serialization.StringSerializer'
     @options['value.serializer'] = 'org.apache.kafka.common.serialization.StringSerializer'
     @options['bootstrap.servers'] = $config['connection']['kafka']

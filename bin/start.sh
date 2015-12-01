@@ -3,7 +3,7 @@
 # Run: ./bin/start.sh
 ###
 
-LIBPATH=("${HOME}"/opt/kafka_2.10-0.8.2.2/libs/*.jar)
+LIBPATH=("${HOME}"/opt/kafka_2.11-0.9.0.0/libs/*.jar)
 for i in "${LIBPATH[@]}"
 do
     CLASSPATH="$i:$CLASSPATH"

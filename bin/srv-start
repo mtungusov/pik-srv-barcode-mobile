@@ -21,7 +21,7 @@ if ENV['BARCODE_MOBILE_ENV']
   require 'logging'
   Logging.supervise as: :logger
   $log = Celluloid::Actor[:logger]
-  $log.info "SRV-BARCODE-MOBLIE starting..."
+  $log.info "SRV-BARCODE-MOBILE starting..."
 
   $RUNNING = true
 
@@ -42,7 +42,7 @@ if ENV['BARCODE_MOBILE_ENV']
 
   Celluloid::Actor[:kafka_producer_random].shutdown
 
-  $log.info "SRV-BARCODE-MOBLIE shutdown"
+  $log.info "SRV-BARCODE-MOBILE shutdown"
 else
   puts 'Error: not found "BARCODE_MOBILE_ENV"!'
 end
