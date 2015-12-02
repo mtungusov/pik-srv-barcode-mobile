@@ -29,10 +29,7 @@ if ENV['BARCODE_MOBILE_ENV']
     $RUNNING = false
   end
 
-  # require 'producer'
-  # require 'producer/kafka_producer'
-  # require 'lib/kafka/consumer'
-  # binding.pry
+  require 'kafka/producer'
 
   require 'workers'
 

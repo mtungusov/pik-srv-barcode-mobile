@@ -1,4 +1,4 @@
-module Producer
+module Util
   module_function
 
   def generate_random_msg

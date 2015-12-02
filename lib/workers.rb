@@ -1,5 +1,5 @@
-require 'producer'
-require 'producer/kafka_producer'
+require 'util'
+require 'kafka/producer'
 
 module Workers; end
 require 'workers/producer_random'

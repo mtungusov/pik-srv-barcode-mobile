@@ -6,12 +6,14 @@ class Workers::ProducerRandom
 
   def initialize
     info "ProducerPandom starting up..."
-    @producer = Producer::KafkaProducer.new
-    producer.connect
+    @producer = Kafka::Producer.new(
+        { 'bootstrap.servers'=>$config['connection']['kafka'] },
+        $config['connection']['timeout_in_ms']
+    )
   end
 
   def process
-    msg = Producer::generate_random_msg
+    msg = Util::generate_random_msg
     key = msg[:barcode]
     _send_message(key, msg)
   end
