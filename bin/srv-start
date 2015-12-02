@@ -30,18 +30,22 @@ if ENV['BARCODE_MOBILE_ENV']
   end
 
   require 'kafka/producer'
+  require 'kafka/consumer'
 
   require 'workers'
 
   Workers::ProducerRandom.supervise as: :kafka_producer_random
+  Workers::ConsumerTest.supervise as: :kafka_consumer_test
+
+  Celluloid::Actor[:kafka_consumer_test].async.process
 
   while $RUNNING
     Celluloid::Actor[:kafka_producer_random].process
     sleep 2.0
   end
 
-
   Celluloid::Actor[:kafka_producer_random].shutdown
+  Celluloid::Actor[:kafka_consumer_test].terminate
 
   $log.info "SRV-BARCODE-MOBILE shutdown"
 else
