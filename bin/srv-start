@@ -31,6 +31,9 @@ if ENV['BARCODE_MOBILE_ENV']
 
   # require 'producer'
   # require 'producer/kafka_producer'
+  # require 'lib/kafka/consumer'
+  # binding.pry
+
   require 'workers'
 
   Workers::ProducerRandom.supervise as: :kafka_producer_random
@@ -39,6 +42,7 @@ if ENV['BARCODE_MOBILE_ENV']
     Celluloid::Actor[:kafka_producer_random].process
     sleep 2.0
   end
+
 
   Celluloid::Actor[:kafka_producer_random].shutdown
 
