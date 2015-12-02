@@ -2,7 +2,7 @@ class Workers::ProducerRandom
   include Celluloid
   include Celluloid::Internals::Logger
 
-  attr_reader :producer
+  attr_reader :producer, :topic
 
   def initialize
     info "ProducerPandom starting up..."
@@ -10,6 +10,7 @@ class Workers::ProducerRandom
         { 'bootstrap.servers'=>$config['connection']['kafka'] },
         $config['connection']['timeout_in_ms']
     )
+    @topic = $config['kafka']['topic']
   end
 
   def process
@@ -19,7 +20,7 @@ class Workers::ProducerRandom
   end
 
   def _send_message(key, message)
-    r, e = producer.send_message($config['kafka']['topic'], key, message)
+    r, e = producer.send_message(topic, key, message)
     error e[:error] if e
     info "producer sent: #{message}, offset: #{r.offset}" if r
   end
