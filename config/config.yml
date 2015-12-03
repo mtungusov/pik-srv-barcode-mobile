@@ -4,6 +4,9 @@ defaults: &defaults
     zookeeper: "kafka.dev:2128"
     kafka: "kafka.dev:9092"
     timeout_in_ms: 500
+    websocket:
+      host: localhost
+      port: 3000
 
   kafka:
     topic: "barcode-warehouse-receiving"

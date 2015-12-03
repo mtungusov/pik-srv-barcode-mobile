@@ -11,4 +11,11 @@ module Util
       change_at: Time.now.to_i
     }
   end
+
+  def gen_ws_error_msg(text)
+    {
+        type: 'error',
+        msg: text
+    }.to_json
+  end
 end

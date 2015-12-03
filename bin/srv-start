@@ -29,6 +29,8 @@ if ENV['BARCODE_MOBILE_ENV']
   #   $RUNNING = false
   # end
 
+  require 'util'
+
   require 'kafka/producer'
   require 'kafka/consumer'
 
@@ -52,12 +54,13 @@ if ENV['BARCODE_MOBILE_ENV']
     trap('INT')  { stop }
     trap('TERM') { stop }
 
-    WebSocket::EventMachine::Server.start(:host => 'localhost', :port => 3000) do |ws|
+    WebSocket::EventMachine::Server.start(
+        host: $config['connection']['websocket']['host'],
+        port: $config['connection']['websocket']['port']) do |ws|
       ws.onopen do
         device_id = ws.instance_variable_get('@handshake').path.match(/^\/(\w+)/)[1]
-        $log.info "open device_id: #{device_id}"
         if device_id != '111'
-          $log.info "client not allowed. closing"
+          ws.send Util::gen_ws_error_msg("client not allowed. closing")
           ws.close
         end
       end

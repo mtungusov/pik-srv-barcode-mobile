@@ -17,7 +17,9 @@
 
                 ws = new WebSocket("ws://localhost:3000/" + device_id);
 //                ws = new WebSocket("ws://localhost:3000/");
-                ws.onmessage = function(evt) { $("#msg").append("<p>"+evt.data+"</p>"); };
+                ws.onmessage = function(evt) {
+                    $("#msg").append("<p>"+evt.data+"</p>");
+                };
                 ws.onclose = function() { debug("disconnected..."); };
                 ws.onopen = function() {
                     debug("connected...");

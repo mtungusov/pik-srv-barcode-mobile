@@ -1,4 +1,3 @@
-require 'util'
 require 'kafka/producer'
 
 module Workers; end
