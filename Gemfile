@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'celluloid'
+gem 'eventmachine'
+gem 'websocket-eventmachine-server'
 
 group :development do
   gem 'pry'

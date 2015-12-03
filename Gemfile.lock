@@ -19,6 +19,7 @@ GEM
     celluloid-supervision (0.20.5)
       timers (>= 4.1.1)
     coderay (1.1.0)
+    eventmachine (1.0.8-java)
     ffi (1.9.10-java)
     hitimes (1.2.3-java)
     method_source (0.8.2)
@@ -32,13 +33,23 @@ GEM
       ffi
     timers (4.1.1)
       hitimes
+    websocket (1.2.2)
+    websocket-eventmachine-base (1.1.1)
+      eventmachine (~> 1.0)
+      websocket (~> 1.0)
+      websocket-native (~> 1.0)
+    websocket-eventmachine-server (1.0.1)
+      websocket-eventmachine-base (~> 1.0)
+    websocket-native (1.0.0-java)
 
 PLATFORMS
   java
 
 DEPENDENCIES
   celluloid
+  eventmachine
   pry
+  websocket-eventmachine-server
 
 BUNDLED WITH
    1.10.6
