@@ -1,0 +1,70 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var ws;
+
+            function debug(str){ $("#debug").append("<p>"+str+"</p>"); };
+
+            function connectToWebsocket() {
+                if (!("WebSocket" in window)) {
+                    alert("Your browser not compatibility with Websocket!");
+                    return false;
+                }
+
+                var device_id = $('#device_id').val();
+
+                ws = new WebSocket("ws://localhost:3000/" + device_id);
+//                ws = new WebSocket("ws://localhost:3000/");
+                ws.onmessage = function(evt) { $("#msg").append("<p>"+evt.data+"</p>"); };
+                ws.onclose = function() { debug("disconnected..."); };
+                ws.onopen = function() {
+                    debug("connected...");
+                };
+                window.ws = ws;
+                return false;
+            };
+
+            function sendToWebsocket() {
+                var from = $('#device_id').val();
+                var to = $('#to').val();
+                var body = $('#body').val();
+
+                //Chat
+                var msg = {
+                    "from": from,
+                    "to": to,
+                    "body": body
+                };
+
+                debug(JSON.stringify(msg));
+                ws.send(JSON.stringify(msg));
+                // ws.send(body);
+                return false;
+            };
+
+            $("#connect").submit(connectToWebsocket);
+            $("#send").submit(sendToWebsocket);
+
+        });
+    </script>
+</head>
+<body>
+<form id="connect" action="" data-remote="true">
+    <label for="device_id">Device Id:</label>
+    <input type="text" id="device_id" value="111">
+    <input type="submit" value="Connect">
+</form>
+<div id="msg"></div>
+<form id="send" action="">
+    <label for="to">To:</label><br>
+    <input type="text" id="to"><br>
+    <label for="body">Body:</label><br>
+    <!-- <input type="text" id="body"> -->
+    <textarea id="body"></textarea><br>
+    <input type="submit" value="Send">
+</form>
+<div id="debug"></div>
+</body>
+</html>

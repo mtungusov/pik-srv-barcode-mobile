@@ -20,9 +20,6 @@ GEM
       timers (>= 4.1.1)
     coderay (1.1.0)
     eventmachine (1.0.8-java)
-    faye-websocket (0.10.2)
-      eventmachine (>= 0.12.0)
-      websocket-driver (>= 0.5.1)
     ffi (1.9.10-java)
     hitimes (1.2.3-java)
     method_source (0.8.2)
@@ -31,26 +28,27 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
       spoon (~> 0.0)
-    puma (2.15.3-java)
-    rack (1.6.4)
     slop (3.6.0)
     spoon (0.0.4)
       ffi
     timers (4.1.1)
       hitimes
-    websocket-driver (0.6.3-java)
-      websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.2)
+    websocket (1.2.2)
+    websocket-eventmachine-base (1.1.1)
+      eventmachine (~> 1.0)
+      websocket (~> 1.0)
+      websocket-native (~> 1.0)
+    websocket-eventmachine-server (1.0.1)
+      websocket-eventmachine-base (~> 1.0)
+    websocket-native (1.0.0-java)
 
 PLATFORMS
   java
 
 DEPENDENCIES
   celluloid
-  faye-websocket
   pry
-  puma
-  rack
+  websocket-eventmachine-server
 
 BUNDLED WITH
    1.10.6

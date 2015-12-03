@@ -1,12 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'celluloid'
-# gem 'eventmachine'
-# gem 'websocket-eventmachine-server'
-
-gem 'faye-websocket'
-gem 'rack'
-gem 'puma'
+gem 'websocket-eventmachine-server'
 
 group :development do
   gem 'pry'

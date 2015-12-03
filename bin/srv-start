@@ -54,12 +54,16 @@ if ENV['BARCODE_MOBILE_ENV']
 
     WebSocket::EventMachine::Server.start(:host => 'localhost', :port => 3000) do |ws|
       ws.onopen do
-        $log.info "Client connected"
+        device_id = ws.instance_variable_get('@handshake').path.match(/^\/(\w+)/)[1]
+        $log.info "open device_id: #{device_id}"
+        if device_id != '111'
+          $log.info "client not allowed. closing"
+          ws.close
+        end
       end
 
       ws.onmessage do |msg, type|
-        $log.info "Received message: #{msg}"
-        ws.send msg, :type => type
+        $log.info "Received message: #{msg}, type: #{type}"
       end
 
       ws.onclose do
