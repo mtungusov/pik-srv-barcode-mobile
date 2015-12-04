@@ -3,6 +3,10 @@ source 'https://rubygems.org'
 gem 'celluloid'
 gem 'websocket-eventmachine-server'
 
+gem 'redis'
+gem 'connection_pool'
+gem 'redis-namespace'
+
 group :development do
   gem 'pry'
 end
