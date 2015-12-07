@@ -9,7 +9,7 @@ if ENV['BARCODE_MOBILE_ENV']
   require 'config/config'
   $config = Configuration.load_config(ENV['BARCODE_MOBILE_ENV'])
 
-  $zk_con = ENV['ZOOKEEPER_CONNECTION'] ? ENV['ZOOKEEPER_CONNECTION'] : $config['connection']['zookeeper']
+  # $zk_con = ENV['ZOOKEEPER_CONNECTION'] ? ENV['ZOOKEEPER_CONNECTION'] : $config['connection']['zookeeper']
   $kf_con = ENV['KAFKA_CONNECTION'] ? ENV['KAFKA_CONNECTION'] : $config['connection']['kafka']
 
   require 'java'
@@ -25,44 +25,45 @@ if ENV['BARCODE_MOBILE_ENV']
 
   $RUNNING = true
 
-  # trap('SIGINT') do
-  #   $RUNNING = false
-  # end
-
-  # require 'util'
-  #
-  # require 'kafka/producer'
-  # require 'kafka/consumer'
-  #
-  # require 'workers'
-  #
-  # Workers::ProducerRandom.supervise as: :kafka_producer_random
-  # Workers::ConsumerTest.supervise as: :kafka_consumer_test
-
-  # Celluloid::Actor[:kafka_consumer_test].async.process
-  #
-  # while $RUNNING
-  #   Celluloid::Actor[:kafka_producer_random].process
-  #   sleep 2.0
-  # end
+  trap('SIGINT') do
+    $RUNNING = false
+  end
 
   # Redis
-
   require 'cache'
   redis_opts = {
       url: $config['connection']['redis']['url'],
       namespace: $config['connection']['redis']['namespace']
   }
   $cache  = Cache::pool redis_opts
-  binding.pry
-
+  # binding.pry
   # (0..9).each {|d| $cache.with {|c| c.set "k0#{d}", "v0#{d}" }}
   # $cache.with {|c| c.scan_each(match: "k*"){|k| p "key: #{k}, v: #{c.get k}"} }
 
+
+  require 'kafka/consumer'
+  require 'workers/consumer_nsi'
+
+  consumer_opts = {
+      'bootstrap.servers' => $kf_con,
+      'group.id' => 'srv-barcode-mobile-consumer-nsi'
+  }
+  topics = $config['kafka']['topics_nsi']
+
+  Workers::ConsumerNsi.supervise as: :kafka_consumer_nsi, args: [consumer_opts, topics]
+  Celluloid::Actor[:kafka_consumer_nsi].async.process
+
+  # todo
+  # сделать продюсера нси
+  # сделать запись в кеш
+
   # require 'ws-server'
 
-  # Celluloid::Actor[:kafka_producer_random].shutdown
-  # Celluloid::Actor[:kafka_consumer_test].terminate
+  while $RUNNING
+    sleep 2.0
+  end
+
+  Celluloid::Actor[:kafka_consumer_nsi].terminate
 
   $log.info "SRV-BARCODE-MOBILE shutdown"
 else

@@ -18,6 +18,9 @@ development:
   <<: *defaults
   kafka:
     topic: "dev-barcode-warehouse-receiving"
+    topics_nsi:
+    - "1s-references-podrazdeleniya"
+    - "1s-references-sotrudniki"
 
 production:
   <<: *defaults
