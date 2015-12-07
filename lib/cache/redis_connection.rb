@@ -36,7 +36,7 @@ class Cache::RedisConnection
 
       if opts.key? :path
         [:url, :host, :port, :db].map { |k| opts.delete k }
-      elsif opts.key? url
+      elsif opts.key? :url
         [:host, :port, :db].map { |k| opts.delete k }
       end
 

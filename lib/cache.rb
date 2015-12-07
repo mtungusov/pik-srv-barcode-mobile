@@ -3,7 +3,7 @@ require 'cache/redis_connection'
 module Cache
   module_function
 
-  def pool
-    @cache_pool ||= Cache::RedisConnection.create
+  def pool(options={})
+    @cache_pool ||= Cache::RedisConnection.create options
   end
 end

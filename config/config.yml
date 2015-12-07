@@ -7,6 +7,9 @@ defaults: &defaults
     websocket:
       host: localhost
       port: 3000
+    redis:
+      url: "redis://kafka.dev:6379"
+      namespace: "dev:barcode"
 
   kafka:
     topic: "barcode-warehouse-receiving"

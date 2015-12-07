@@ -31,12 +31,12 @@ if ENV['BARCODE_MOBILE_ENV']
   require 'kafka/consumer'
   require 'workers/consumer_test'
 
-  consumer_opt = {
+  consumer_opts = {
     'bootstrap.servers' => $kf_con,
     'group.id' => 'test-ruby-consumer'
   }
 
-  Workers::ConsumerTest.supervise as: :kafka_consumer_test, args: [consumer_opt, $config['kafka']['topic']]
+  Workers::ConsumerTest.supervise as: :kafka_consumer_test, args: [consumer_opts, $config['kafka']['topic']]
 
   Celluloid::Actor[:kafka_consumer_test].async.process
 
