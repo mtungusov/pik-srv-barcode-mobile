@@ -1,0 +1,50 @@
+#!/usr/bin/env jruby
+
+if ENV['BARCODE_MOBILE_ENV']
+  require 'pry'
+
+  $: << File.join(File.dirname(__FILE__), '..')
+  puts "RUN in: #{ENV['BARCODE_MOBILE_ENV']}"
+
+  require 'config/config'
+  $config = Configuration.load_config(ENV['BARCODE_MOBILE_ENV'])
+
+  $zk_con = ENV['ZOOKEEPER_CONNECTION'] ? ENV['ZOOKEEPER_CONNECTION'] : $config['connection']['zookeeper']
+  $kf_con = ENV['KAFKA_CONNECTION'] ? ENV['KAFKA_CONNECTION'] : $config['connection']['kafka']
+
+  require 'java'
+  require 'json'
+  require 'celluloid/current'
+
+  $: << 'lib'
+
+  require 'logging'
+  Logging.supervise as: :logger
+  $log = Celluloid::Actor[:logger]
+  $log.info "SRV-BARCODE-MOBILE Producer starting..."
+
+  $RUNNING = true
+
+  trap('SIGINT') do
+    $RUNNING = false
+  end
+
+  require 'util'
+
+  require 'kafka/producer'
+  require 'workers/producer_random'
+
+  Workers::ProducerRandom.supervise as: :kafka_producer_random
+
+  while $RUNNING
+    Celluloid::Actor[:kafka_producer_random].process
+    sleep 2.0
+  end
+
+
+  Celluloid::Actor[:kafka_producer_random].shutdown
+
+  $log.info "SRV-BARCODE-MOBILE Producer shutdown"
+else
+  puts 'Error: not found "BARCODE_MOBILE_ENV"!'
+end

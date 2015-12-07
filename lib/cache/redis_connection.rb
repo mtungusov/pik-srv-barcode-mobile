@@ -20,7 +20,7 @@ class Cache::RedisConnection
       namespace = options[:namespace]
 
       client = Redis.new _client_opts(options)
-      
+
       if namespace
         require 'redis-namespace'
         Redis::Namespace.new(namespace, redis: client)

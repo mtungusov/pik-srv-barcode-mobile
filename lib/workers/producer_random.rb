@@ -1,3 +1,5 @@
+module Workers; end
+
 class Workers::ProducerRandom
   include Celluloid
   include Celluloid::Internals::Logger

@@ -1,3 +1,5 @@
+module Workers; end
+
 class Workers::ConsumerTest
   include Celluloid
   include Celluloid::Internals::Logger
@@ -9,11 +11,11 @@ class Workers::ConsumerTest
   def initialize
     info "ConsumerTest starting up..."
     @consumer = Kafka::Consumer.new (
-                                      {
-                                        'bootstrap.servers'=>'kafka.dev:9092',
-                                        'group.id'=>'test-ruby-consumer'
-                                      }
-                                    )
+      {
+        'bootstrap.servers'=>'kafka.dev:9092',
+        'group.id'=>'test-ruby-consumer'
+      }
+    )
     consumer.subscribe [$config['kafka']['topic']]
   end
 
@@ -27,6 +29,6 @@ class Workers::ConsumerTest
   end
 
   def shutdown
-    consumer.close
+    # consumer.close
   end
 end

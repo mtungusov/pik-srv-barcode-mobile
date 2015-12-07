@@ -19,6 +19,7 @@ GEM
     celluloid-supervision (0.20.5)
       timers (>= 4.1.1)
     coderay (1.1.0)
+    connection_pool (2.2.0)
     eventmachine (1.0.8-java)
     ffi (1.9.10-java)
     hitimes (1.2.3-java)
@@ -28,6 +29,9 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
       spoon (~> 0.0)
+    redis (3.2.2)
+    redis-namespace (1.5.2)
+      redis (~> 3.0, >= 3.0.4)
     slop (3.6.0)
     spoon (0.0.4)
       ffi
@@ -47,7 +51,10 @@ PLATFORMS
 
 DEPENDENCIES
   celluloid
+  connection_pool
   pry
+  redis
+  redis-namespace
   websocket-eventmachine-server
 
 BUNDLED WITH
