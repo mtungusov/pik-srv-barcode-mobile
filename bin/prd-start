@@ -34,7 +34,11 @@ if ENV['BARCODE_MOBILE_ENV']
   require 'kafka/producer'
   require 'workers/producer_random'
 
-  Workers::ProducerRandom.supervise as: :kafka_producer_random
+  producer_opts = {
+      producer: { 'bootstrap.servers' => $config['connection']['kafka'] },
+      timeout: $config['connection']['timeout_in_ms']
+  }
+  Workers::ProducerRandom.supervise as: :kafka_producer_random, args: [producer_opts, $config['kafka']['topic']]
 
   while $RUNNING
     Celluloid::Actor[:kafka_producer_random].process

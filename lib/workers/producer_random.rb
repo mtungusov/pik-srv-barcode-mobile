@@ -6,13 +6,10 @@ class Workers::ProducerRandom
 
   attr_reader :producer, :topic
 
-  def initialize
+  def initialize(options, default_topic)
     info "ProducerPandom starting up..."
-    @producer = Kafka::Producer.new(
-        { 'bootstrap.servers'=>$config['connection']['kafka'] },
-        $config['connection']['timeout_in_ms']
-    )
-    @topic = $config['kafka']['topic']
+    @producer = Kafka::Producer.new(options[:producer], options[:timeout])
+    @topic = default_topic
   end
 
   def process
