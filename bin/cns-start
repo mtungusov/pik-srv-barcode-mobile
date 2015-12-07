@@ -9,7 +9,6 @@ if ENV['BARCODE_MOBILE_ENV']
   require 'config/config'
   $config = Configuration.load_config(ENV['BARCODE_MOBILE_ENV'])
 
-  $zk_con = ENV['ZOOKEEPER_CONNECTION'] ? ENV['ZOOKEEPER_CONNECTION'] : $config['connection']['zookeeper']
   $kf_con = ENV['KAFKA_CONNECTION'] ? ENV['KAFKA_CONNECTION'] : $config['connection']['kafka']
 
   require 'java'
@@ -32,7 +31,12 @@ if ENV['BARCODE_MOBILE_ENV']
   require 'kafka/consumer'
   require 'workers/consumer_test'
 
-  Workers::ConsumerTest.supervise as: :kafka_consumer_test
+  consumer_opt = {
+    'bootstrap.servers' => $kf_con,
+    'group.id' => 'test-ruby-consumer'
+  }
+
+  Workers::ConsumerTest.supervise as: :kafka_consumer_test, args: [consumer_opt, $config['kafka']['topic']]
 
   Celluloid::Actor[:kafka_consumer_test].async.process
 

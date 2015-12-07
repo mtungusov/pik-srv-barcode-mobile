@@ -8,15 +8,10 @@ class Workers::ConsumerTest
 
   attr_reader :consumer
 
-  def initialize
+  def initialize(options, topic)
     info "ConsumerTest starting up..."
-    @consumer = Kafka::Consumer.new (
-      {
-        'bootstrap.servers'=>'kafka.dev:9092',
-        'group.id'=>'test-ruby-consumer'
-      }
-    )
-    consumer.subscribe [$config['kafka']['topic']]
+    @consumer = Kafka::Consumer.new options
+    consumer.subscribe [topic]
   end
 
   def process
