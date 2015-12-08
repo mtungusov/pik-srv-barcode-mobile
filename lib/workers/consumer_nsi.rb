@@ -16,12 +16,19 @@ class Workers::ConsumerNsi
   end
 
   def process
+    _clear_cache $cache
     loop do
       consumer.poll.each do |record|
-        info "value: #{record.value}, offset: #{record.offset}, topic: #{record.topic}"
+        _to_cache $cache, record
+        _notify_ws_clients(record)
+        # info "value: #{record.value}, offset: #{record.offset}, topic: #{record.topic}"
       end
       sleep 0.1
     end
+  end
+
+  def _notify_ws_clients(record)
+    info "New record in #{record.topic}"
   end
 
   def process_from_beginning
@@ -46,5 +53,17 @@ class Workers::ConsumerNsi
 
   def _from_beginning
     topics.each { |t| consumer.seek_to_beginning t }
+  end
+
+  def _to_cache(cache, record)
+    cache.with do |con|
+      con.zadd record.topic, record.offset, record.value
+    end
+  end
+
+  def _clear_cache(cache)
+    cache.with do |con|
+      topics.each { |t| con.del t.topic }
+    end
   end
 end

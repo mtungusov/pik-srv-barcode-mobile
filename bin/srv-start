@@ -62,9 +62,6 @@ if ENV['BARCODE_MOBILE_ENV']
   # }
   # Workers::ProducerNsi.supervise as: :kafka_producer_nsi, args: [producer_opts]
 
-  # todo
-  # сделать запись в кеш
-
   while $RUNNING
     # Celluloid::Actor[:kafka_producer_nsi].process_podr
     # Celluloid::Actor[:kafka_producer_nsi].process_sotr

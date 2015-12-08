@@ -1,7 +1,6 @@
 require 'kafka'
 
 class Kafka::Consumer
-  # java_import org.apache.kafka.clients.producer.ProducerRecord
   java_import org.apache.kafka.common.TopicPartition
 
   KAFKA_CONSUMER = Java::org.apache.kafka.clients.consumer.KafkaConsumer
