@@ -55,6 +55,10 @@ if ENV['BARCODE_MOBILE_ENV']
 
   # require 'ws-server'
 
+  while $RUNNING
+    sleep 2.0
+  end
+
   Celluloid::Actor[:kafka_consumer_nsi].terminate
 
   $log.info "SRV-BARCODE-MOBILE shutdown"

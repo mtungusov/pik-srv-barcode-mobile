@@ -56,8 +56,18 @@ class Workers::ConsumerNsi
   end
 
   def _to_cache(cache, record)
+    # todo
+    # delete empty row from cahce
+    #
+    key = record.key
+    data = _gen_data(record)
     cache.with do |con|
-      con.zadd record.topic, record.offset, record.value
+      if data.key? :value
+        con.set "#{record.topic}:#{key}", data.to_json
+      else
+        # remove key
+      end
+      con.zadd record.topic, record.offset, key
     end
   end
 
@@ -65,5 +75,21 @@ class Workers::ConsumerNsi
     cache.with do |con|
       topics.each { |t| con.del t.topic }
     end
+  end
+
+  def _gen_data(record)
+    begin
+      _empty_data(record).merge { value: JSON.parse(record.value) }
+    rescue
+      _empty_data(record)
+    end
+  end
+
+  def _empty_data(record)
+    {
+        topic: record.topic,
+        offset: record.offset,
+        key: record.key
+    }
   end
 end
