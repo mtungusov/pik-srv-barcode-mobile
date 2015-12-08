@@ -20,20 +20,20 @@ class Workers::ConsumerNsi
     loop do
       consumer.poll.each do |record|
         _to_cache $cache, record
-        _notify_ws_clients(record)
+        notify_ws_clients(record)
         # info "value: #{record.value}, offset: #{record.offset}, topic: #{record.topic}"
       end
       sleep 0.1
     end
   end
 
-  def _notify_ws_clients(record)
-    info "New record in #{record.topic}"
-  end
-
   def process_from_beginning
     _from_beginning
     process
+  end
+
+  def notify_ws_clients(record)
+    info "New record in #{record.topic}"
   end
 
   def shutdown
