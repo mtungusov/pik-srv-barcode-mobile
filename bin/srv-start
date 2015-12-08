@@ -51,31 +51,29 @@ if ENV['BARCODE_MOBILE_ENV']
   topics = $config['kafka']['topics_nsi']
 
   Workers::ConsumerNsi.supervise as: :kafka_consumer_nsi, args: [consumer_opts, topics]
-  Celluloid::Actor[:kafka_consumer_nsi].async.process
+  Celluloid::Actor[:kafka_consumer_nsi].async.process_from_beginning
 
-  require 'kafka/producer'
-  require 'workers/producer_nsi'
-
-  producer_opts = {
-      producer: { 'bootstrap.servers' => $kf_con },
-      timeout: $config['connection']['timeout_in_ms']
-  }
-  Workers::ProducerNsi.supervise as: :kafka_producer_nsi, args: [producer_opts]
+  # require 'kafka/producer'
+  # require 'workers/producer_nsi'
+  #
+  # producer_opts = {
+  #     producer: { 'bootstrap.servers' => $kf_con },
+  #     timeout: $config['connection']['timeout_in_ms']
+  # }
+  # Workers::ProducerNsi.supervise as: :kafka_producer_nsi, args: [producer_opts]
 
   # todo
   # сделать запись в кеш
 
+  while $RUNNING
+    # Celluloid::Actor[:kafka_producer_nsi].process_podr
+    # Celluloid::Actor[:kafka_producer_nsi].process_sotr
+    sleep 2.0
+  end
 
   # require 'ws-server'
 
-  while $RUNNING
-    Celluloid::Actor[:kafka_producer_nsi].process_podr
-    sleep 10.0
-    Celluloid::Actor[:kafka_producer_nsi].process_sotr
-    sleep 10.0
-  end
-
-  Celluloid::Actor[:kafka_producer_nsi].terminate
+  # Celluloid::Actor[:kafka_producer_nsi].terminate
   Celluloid::Actor[:kafka_consumer_nsi].terminate
 
   $log.info "SRV-BARCODE-MOBILE shutdown"

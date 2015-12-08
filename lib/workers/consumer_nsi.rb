@@ -6,12 +6,13 @@ class Workers::ConsumerNsi
 
   finalizer :shutdown
 
-  attr_reader :consumer
+  attr_reader :consumer, :topics
 
-  def initialize(options, topics)
+  def initialize(options, topics_as_str_arr)
     info "ConsumerNsi starting up..."
     @consumer = Kafka::Consumer.new options
-    consumer.subscribe topics
+    @topics = _gen_topics topics_as_str_arr
+    _assign_topics
   end
 
   def process
@@ -23,9 +24,27 @@ class Workers::ConsumerNsi
     end
   end
 
+  def process_from_beginning
+    _from_beginning
+    process
+  end
+
   def shutdown
     info "ConsumerNsi shutdown"
     sleep 1.0
     # consumer.close
+  end
+
+  def _gen_topics(m_topics)
+    m_topics.map { |t| consumer.gen_topic_partition t }
+  end
+
+  def _assign_topics
+    consumer.assign topics
+    info "Consumer topics: #{consumer.consumer.assignment}"
+  end
+
+  def _from_beginning
+    topics.each { |t| consumer.seek_to_beginning t }
   end
 end

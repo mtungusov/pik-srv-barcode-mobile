@@ -1,7 +1,8 @@
 require 'kafka'
 
 class Kafka::Consumer
-  java_import org.apache.kafka.clients.producer.ProducerRecord
+  # java_import org.apache.kafka.clients.producer.ProducerRecord
+  java_import org.apache.kafka.common.TopicPartition
 
   KAFKA_CONSUMER = Java::org.apache.kafka.clients.consumer.KafkaConsumer
 
@@ -37,12 +38,24 @@ class Kafka::Consumer
     consumer.subscribe(topics)
   end
 
+  def assign(topics)
+    consumer.assign topics
+  end
+
   def poll(timeout=100)
     consumer.poll timeout
   end
 
   def close
     consumer.close
+  end
+
+  def gen_topic_partition(topic, partition=0)
+    TopicPartition.new topic, partition
+  end
+
+  def seek_to_beginning(topics)
+    consumer.seekToBeginning topics
   end
 
   def _init_options(options)
