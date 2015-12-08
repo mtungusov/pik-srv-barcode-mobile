@@ -9,7 +9,6 @@ if ENV['BARCODE_MOBILE_ENV']
   require 'config/config'
   $config = Configuration.load_config(ENV['BARCODE_MOBILE_ENV'])
 
-  $zk_con = ENV['ZOOKEEPER_CONNECTION'] ? ENV['ZOOKEEPER_CONNECTION'] : $config['connection']['zookeeper']
   $kf_con = ENV['KAFKA_CONNECTION'] ? ENV['KAFKA_CONNECTION'] : $config['connection']['kafka']
 
   require 'java'
@@ -32,10 +31,14 @@ if ENV['BARCODE_MOBILE_ENV']
   require 'util'
 
   require 'kafka/producer'
+
+  #################
+  # PRODUCER RANDOM
+  #################
   require 'workers/producer_random'
 
   producer_opts = {
-      producer: { 'bootstrap.servers' => $config['connection']['kafka'] },
+      producer: { 'bootstrap.servers' => $kf_con },
       timeout: $config['connection']['timeout_in_ms']
   }
   Workers::ProducerRandom.supervise as: :kafka_producer_random, args: [producer_opts, $config['kafka']['topic']]
@@ -45,8 +48,34 @@ if ENV['BARCODE_MOBILE_ENV']
     sleep 2.0
   end
 
-
   Celluloid::Actor[:kafka_producer_random].shutdown
+  #####################
+  # PRODUCER RANDOM END
+  #####################
+
+  #################
+  # PRODUCER NSI
+  #################
+  # require 'workers/producer_nsi'
+  #
+  # producer_opts = {
+  #     producer: { 'bootstrap.servers' => $kf_con },
+  #     timeout: $config['connection']['timeout_in_ms']
+  # }
+  # Workers::ProducerNsi.supervise as: :kafka_producer_nsi, args: [producer_opts]
+  #
+  # while $RUNNING
+  #   Celluloid::Actor[:kafka_producer_nsi].process_podr
+  #   # Celluloid::Actor[:kafka_producer_nsi].process_sotr
+  #   sleep 2.0
+  # end
+  #
+  # Celluloid::Actor[:kafka_producer_nsi].terminate
+  # #####################
+  # # PRODUCER NSI END
+  # #####################
+
+
 
   $log.info "SRV-BARCODE-MOBILE Producer shutdown"
 else

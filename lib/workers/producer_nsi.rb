@@ -1,5 +1,3 @@
-require 'util'
-
 module Workers; end
 
 class Workers::ProducerNsi

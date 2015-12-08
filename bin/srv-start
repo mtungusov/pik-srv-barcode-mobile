@@ -53,24 +53,8 @@ if ENV['BARCODE_MOBILE_ENV']
   Workers::ConsumerNsi.supervise as: :kafka_consumer_nsi, args: [consumer_opts, topics]
   Celluloid::Actor[:kafka_consumer_nsi].async.process_from_beginning
 
-  # require 'kafka/producer'
-  # require 'workers/producer_nsi'
-  #
-  # producer_opts = {
-  #     producer: { 'bootstrap.servers' => $kf_con },
-  #     timeout: $config['connection']['timeout_in_ms']
-  # }
-  # Workers::ProducerNsi.supervise as: :kafka_producer_nsi, args: [producer_opts]
-
-  while $RUNNING
-    # Celluloid::Actor[:kafka_producer_nsi].process_podr
-    # Celluloid::Actor[:kafka_producer_nsi].process_sotr
-    sleep 2.0
-  end
-
   # require 'ws-server'
 
-  # Celluloid::Actor[:kafka_producer_nsi].terminate
   Celluloid::Actor[:kafka_consumer_nsi].terminate
 
   $log.info "SRV-BARCODE-MOBILE shutdown"
