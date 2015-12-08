@@ -18,4 +18,24 @@ module Util
         msg: text
     }.to_json
   end
+
+  def generate_random_podr
+    n = (1..3).map{rand 9}.join
+    {
+        guid: "ou-#{n}",
+        name: "Склад-#{n}-#{rand 9}"
+    }
+  end
+
+  def generate_random_sotr
+    n = (1..3).map{rand 9}.join
+    ln = %w[Иванов Петров Сидоров Васечкин]
+    fn = %w[Александр Иван Петр Василий]
+    {
+        guid: "sotr-#{n}",
+        fullname: "#{ln[rand(ln.length)]} #{fn[rand(fn.length)]}",
+        ou: "Склад-#{n}",
+        barcode: "200#{(1..9).map {rand 9}.join}"
+    }
+  end
 end
