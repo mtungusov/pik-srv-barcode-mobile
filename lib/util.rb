@@ -38,4 +38,8 @@ module Util
         barcode: "200#{(1..9).map {rand 9}.join}"
     }
   end
+
+  def generate_random_uuid
+    ["%02x"*4, "%02x"*2, "%02x"*2, "%02x"*2, "%02x"*6].join("-") % (1..16).map {|x| rand(0xff) }
+  end
 end
