@@ -65,7 +65,7 @@ class Workers::ConsumerNsi
       if data.key? :value
         con.set "#{record.topic}:#{key}", data.to_json
       else
-        # remove key
+        con.del "#{record.topic}:#{key}"
       end
       con.zadd record.topic, record.offset, key
     end
@@ -79,7 +79,7 @@ class Workers::ConsumerNsi
 
   def _gen_data(record)
     begin
-      _empty_data(record).merge { value: JSON.parse(record.value) }
+      _empty_data(record).merge({ value: JSON.parse(record.value) })
     rescue
       _empty_data(record)
     end
