@@ -30,7 +30,7 @@ module Util
   def generate_random_sotr
     n = (1..3).map{rand 9}.join
     ln = %w[Иванов Петров Сидоров Васечкин]
-    fn = %w[Александр Иван Петр Василий]
+    fn = %w[Александр Иван Петр Сидор Василий]
     {
         guid: "sotr-#{n}",
         fullname: "#{ln[rand(ln.length)]} #{fn[rand(fn.length)]}",

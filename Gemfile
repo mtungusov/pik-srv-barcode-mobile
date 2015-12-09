@@ -7,6 +7,8 @@ gem 'redis'
 gem 'connection_pool'
 gem 'redis-namespace'
 
+gem 'json-rpc-objects'
+
 group :development do
   gem 'pry'
 end
