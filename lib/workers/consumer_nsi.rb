@@ -20,7 +20,7 @@ class Workers::ConsumerNsi
     loop do
       consumer.poll.each do |record|
         _to_cache $cache, record
-        notify_ws_clients(record)
+        # notify_ws_clients(record)
         # info "value: #{record.value}, offset: #{record.offset}, topic: #{record.topic}"
       end
       sleep 0.1

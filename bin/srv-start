@@ -23,11 +23,11 @@ if ENV['BARCODE_MOBILE_ENV']
   $log = Celluloid::Actor[:logger]
   $log.info "SRV-BARCODE-MOBILE starting..."
 
-  $RUNNING = true
-
-  trap('SIGINT') do
-    $RUNNING = false
-  end
+  # $RUNNING = true
+  #
+  # trap('SIGINT') do
+  #   $RUNNING = false
+  # end
 
   # Redis
   require 'cache'
@@ -53,11 +53,11 @@ if ENV['BARCODE_MOBILE_ENV']
   Workers::ConsumerNsi.supervise as: :kafka_consumer_nsi, args: [consumer_opts, topics]
   Celluloid::Actor[:kafka_consumer_nsi].async.process_from_beginning
 
-  # require 'ws-server'
+  require 'ws-server'
 
-  while $RUNNING
-    sleep 2.0
-  end
+  # while $RUNNING
+  #   sleep 2.0
+  # end
 
   Celluloid::Actor[:kafka_consumer_nsi].terminate
 

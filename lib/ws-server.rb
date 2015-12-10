@@ -1,6 +1,9 @@
 require 'eventmachine'
 require 'websocket-eventmachine-server'
 
+require 'util'
+require 'ws-server/message_handler'
+
 EM.run do
   $log.info 'EM start'
   trap('INT')  { stop }
@@ -18,8 +21,8 @@ EM.run do
       end
     end
 
-    ws.onmessage do |msg, type|
-      $log.info "Received message: #{msg}, type: #{type}"
+    ws.onmessage do |data|
+      WsServer::MessageHandler.handle(ws, data)
     end
 
     ws.onclose do
