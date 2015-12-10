@@ -56,9 +56,6 @@ class Workers::ConsumerNsi
   end
 
   def _to_cache(cache, record)
-    # todo
-    # delete empty row from cahce
-    #
     key = record.key
     data = _gen_data(record)
     cache.with do |con|
@@ -73,7 +70,12 @@ class Workers::ConsumerNsi
 
   def _clear_cache(cache)
     cache.with do |con|
-      topics.each { |t| con.del t.topic }
+      topics.each do |t|
+        # Clear Sets
+        con.del t.topic
+        # Clear Keys
+        con.scan_each(:match => "#{t.topic}:*") {|key| con.del key }
+      end
     end
   end
 
