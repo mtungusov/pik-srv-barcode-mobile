@@ -59,7 +59,7 @@ class Workers::ConsumerNsi
     key = record.key
     data = _gen_data(record)
     cache.with do |con|
-      if data.key? :value
+      if data.key? :attributes
         con.set "#{record.topic}:#{key}", data.to_json
       else
         con.del "#{record.topic}:#{key}"
@@ -81,7 +81,7 @@ class Workers::ConsumerNsi
 
   def _gen_data(record)
     begin
-      _empty_data(record).merge({ value: JSON.parse(record.value) })
+      _empty_data(record).merge({ attributes: JSON.parse(record.value) })
     rescue
       _empty_data(record)
     end
@@ -89,9 +89,11 @@ class Workers::ConsumerNsi
 
   def _empty_data(record)
     {
-        topic: record.topic,
-        offset: record.offset,
-        key: record.key
+        type: record.topic,
+        id: record.key,
+        meta: {
+            offset: record.offset
+        }
     }
   end
 end

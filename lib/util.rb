@@ -42,4 +42,13 @@ module Util
   def generate_random_uuid
     ["%02x"*4, "%02x"*2, "%02x"*2, "%02x"*2, "%02x"*6].join("-") % (1..16).map {|x| rand(0xff) }
   end
+
+  def get_keys_with_max_offsets(array_of_keys)
+    # [[key, offset],...]
+    # Return array of keys with max offset sorted by offset
+    array_of_keys.inject({}) { |acc, e|
+      acc[e[0]]=e[1] if (!acc[e[0]] || acc[e[0]] < e[1])
+      acc
+    }.sort_by { |e| e[1] }.inject([]) { |acc, e| acc << e[0] }
+  end
 end

@@ -8,7 +8,8 @@ EM.run do
 
   WebSocket::EventMachine::Server.start(
       host: $config['connection']['websocket']['host'],
-      port: $config['connection']['websocket']['port']) do |ws|
+      port: $config['connection']['websocket']['port']
+  ) do |ws|
     ws.onopen do
       device_id = ws.instance_variable_get('@handshake').path.match(/^\/(\w+)/)[1]
       if device_id != '111'
