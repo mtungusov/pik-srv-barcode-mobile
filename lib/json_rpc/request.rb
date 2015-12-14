@@ -4,8 +4,8 @@ module JsonRpc
     attr_reader :method, :params, :id
 
     def initialize(method, params={}, id = nil)
-      @method = method
-      @params = params
+      @method = method.to_sym
+      @params = params.is_a?(::Hash) ? hash_to_sym(params) : params
       @id = id
     end
 
@@ -28,8 +28,20 @@ module JsonRpc
       h
     end
 
-    def parse(date)
-      raise NotImplemented
+    def hash_to_sym(data)
+      data.keys.inject({}) do |acc, key|
+        k = key.is_a?(::String) ? key.to_sym : key
+        v = data[key].is_a?(::Hash) ? hash_to_sym(data[key]) : data[key]
+        acc[k] = v
+        acc
+      end
+    end
+
+    def self.parse(data)
+      request = JSON.parse data, symbolize_names: true
+      raise 'Invalid JSONRPC data' unless JsonRpc.valid_request? request
+
+      self.new(request[:method], request[:params], request[:id])
     end
   end
 end

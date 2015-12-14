@@ -1,8 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    abstract (1.0.0)
-    addressable (2.4.0)
     celluloid (0.17.2)
       celluloid-essentials
       celluloid-extras
@@ -25,15 +23,7 @@ GEM
     eventmachine (1.0.8-java)
     ffi (1.9.10-java)
     hitimes (1.2.3-java)
-    json-rpc-objects (0.4.5)
-      abstract (>= 1.0.0)
-      addressable (>= 2.2.2)
-      json-rpc-objects-json (>= 0.1.1)
-      ruby-version (>= 0.4.0)
-    json-rpc-objects-json (0.1.1)
-      multi_json
     method_source (0.8.2)
-    multi_json (1.11.2)
     pry (0.10.3-java)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -42,7 +32,6 @@ GEM
     redis (3.2.2)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
-    ruby-version (0.4.3)
     slop (3.6.0)
     spoon (0.0.4)
       ffi
@@ -63,7 +52,6 @@ PLATFORMS
 DEPENDENCIES
   celluloid
   connection_pool
-  json-rpc-objects
   pry
   redis
   redis-namespace
