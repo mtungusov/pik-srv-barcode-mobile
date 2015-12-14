@@ -23,7 +23,6 @@ module WsServer::MessageHandler
                _process obj
              end
 
-    $log.info "After _process #{result.to_h}"
     _response(ws, result) if result
   end
 
