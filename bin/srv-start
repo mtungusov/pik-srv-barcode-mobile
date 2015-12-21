@@ -1,7 +1,7 @@
 #!/usr/bin/env jruby
 
 if ENV['BARCODE_MOBILE_ENV']
-  require 'pry'
+  # require 'pry'
 
   $: << File.join(File.dirname(__FILE__), '..')
   puts "RUN in: #{ENV['BARCODE_MOBILE_ENV']}"
