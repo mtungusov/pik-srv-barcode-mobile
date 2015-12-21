@@ -15,7 +15,8 @@
 
                 var device_id = $('#device_id').val();
 
-                ws = new WebSocket("ws://localhost:3000/" + device_id);
+                // ws = new WebSocket("ws://localhost:3000/" + device_id);
+                ws = new WebSocket("ws://bm01dsk2.dsk2.picompany.ru/111");
 //                ws = new WebSocket("ws://localhost:3000/");
                 ws.onmessage = function(evt) {
                     $("#msg").append("<p>"+evt.data+"</p>");

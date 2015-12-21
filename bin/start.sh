@@ -6,9 +6,11 @@
 if [ "x$RUN_ENV" = "x" ]
 then
   RUN_ENV="development"
+  LIBPATH=("${HOME}"/opt/kafka_2.11-0.9.0.0/libs/*.jar)
+else
+  LIBPATH=(/opt/kafka_2.11-0.9.0.0/libs/*.jar)
 fi
 
-LIBPATH=("${HOME}"/opt/kafka_2.11-0.9.0.0/libs/*.jar)
 for i in "${LIBPATH[@]}"
 do
     CLASSPATH="$i:$CLASSPATH"
