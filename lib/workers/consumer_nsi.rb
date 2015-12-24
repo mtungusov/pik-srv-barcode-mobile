@@ -19,9 +19,10 @@ class Workers::ConsumerNsi
     _clear_cache $cache
     loop do
       consumer.poll.each do |record|
+        info "key: #{record.key}, value: #{record.value}, offset: #{record.offset}, topic: #{record.topic}" if $DEBUG
+
         _to_cache $cache, record
         # notify_ws_clients(record)
-        # info "value: #{record.value}, offset: #{record.offset}, topic: #{record.topic}"
       end
       sleep 0.1
     end

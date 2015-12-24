@@ -1,7 +1,9 @@
 #!/usr/bin/env jruby
 
 if ENV['BARCODE_MOBILE_ENV']
-  # require 'pry'
+  if ENV['BARCODE_MOBILE_ENV'] == 'development'
+    require 'pry'
+  end
 
   $: << File.join(File.dirname(__FILE__), '..')
   puts "RUN in: #{ENV['BARCODE_MOBILE_ENV']}"
@@ -22,6 +24,7 @@ if ENV['BARCODE_MOBILE_ENV']
   Logging.supervise as: :logger
   $log = Celluloid::Actor[:logger]
   $log.info "SRV-BARCODE-MOBILE starting..."
+  $DEBUG = true
 
   # $RUNNING = true
   #
