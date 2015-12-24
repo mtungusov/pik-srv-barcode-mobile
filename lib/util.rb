@@ -49,6 +49,6 @@ module Util
     array_of_keys.inject({}) { |acc, e|
       acc[e[0]]=e[1] if (!acc[e[0]] || acc[e[0]] < e[1])
       acc
-    }.sort_by { |e| e[1] }.inject([]) { |acc, e| acc << e[0] }
+    }.sort_by { |e| e[1] }.inject([]) { |acc, e| acc << [e[0], e[1]] }
   end
 end
