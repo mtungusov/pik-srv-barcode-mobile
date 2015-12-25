@@ -1,7 +1,7 @@
 ---
 defaults: &defaults
   connection:
-    zookeeper: "kafka.dev:2128"
+    zookeeper: "kafka.dev:2181"
     kafka: "kafka.dev:9092"
     timeout_in_ms: 500
     websocket:
