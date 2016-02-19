@@ -1,0 +1,14 @@
+---
+defaults: &defaults
+  app_name: "barcode-mobile"
+  connection:
+    zookeeper: "kafka.dev:2181"
+    kafka: "kafka.dev:9092"
+    redis: "redis://kafka.dev:6379"
+    timeout_in_ms: 500
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults
