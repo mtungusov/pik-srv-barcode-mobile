@@ -18,13 +18,7 @@ require_relative "lib/trap_signals"
 # require_relative 'lib/workers'
 # Workers.start_all
 
-# require_relative "lib/api"
-# run API::App
-
-$run = true
-while $run
-  p 'tick'
-  sleep 2
-end
+require_relative "lib/api"
+run API::App
 
 require_relative "lib/at_exit_actions"
