@@ -24,6 +24,8 @@ class Kafka::Consumer
     value.deserializer
   ]
 
+  attr_reader :consumer
+
   def initialize(consumer_options)
     @consumer = KAFKA_CONSUMER.new(Kafka::Helpers::create_config(_init_options(consumer_options)))
   end
@@ -42,6 +44,10 @@ class Kafka::Consumer
 
   def close
     @consumer.close
+  end
+
+  def wakeup
+    @consumer.wakeup
   end
 
   def gen_topic_partition(topic, partition=0)
