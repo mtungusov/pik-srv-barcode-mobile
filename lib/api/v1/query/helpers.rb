@@ -1,5 +1,5 @@
 module QueryHelpers
   def queries
-    %w[podrazdeleniya check_for_updates]
+    %w[check_for_updates get_updates]
   end
 end
