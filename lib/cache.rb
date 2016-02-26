@@ -1,5 +1,6 @@
 module Cache; end
 require_relative 'cache/redis_connection'
+require_relative 'cache/operations'
 
 module Cache
   module_function

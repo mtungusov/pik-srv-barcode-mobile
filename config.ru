@@ -16,7 +16,7 @@ puts "App: #{$settings.app_name}"
 require_relative 'lib/trap_signals'
 
 require_relative 'lib/cache'
-$cache = Cache::pool({ url: $settings.connection.redis })
+Cache::pool({ url: $settings.connection.redis })
 
 require_relative 'lib/workers'
 Workers.start_all

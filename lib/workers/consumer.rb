@@ -41,5 +41,6 @@ class Workers::Consumer
 
   def _process_record(record)
     p "key: #{record.key}, value: #{record.value}, offset: #{record.offset}, topic: #{record.topic}"
+    Cache::save_record record
   end
 end
