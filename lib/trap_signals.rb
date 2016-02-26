@@ -2,6 +2,7 @@
   trap(signal) do
     puts "Terminate:start"
     Workers.shutdown
+    Cache.shutdown
     puts "Terminate:end"
   end
 end

@@ -23,6 +23,8 @@ configurations {
 
 dependencies {
     // jrubyExec "rubygems:pry:0.10.3"
+    gems 'rubygems:connection_pool:2.2.0'
+    gems 'rubygems:redis:3.2.2'
     gems 'rubygems:celluloid:0.17.3'
     gems 'rubygems:puma:2.16.0'
     gems 'rubygems:grape:0.14.0'
