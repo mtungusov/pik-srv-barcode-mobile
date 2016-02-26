@@ -11,5 +11,6 @@ class API::V1::Query < Grape::API
     end
 
     mount API::V1::Query::Podrazdeleniya
+    mount API::V1::Query::QueryForUpdates
   end
 end

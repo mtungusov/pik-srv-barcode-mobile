@@ -1,5 +1,5 @@
 module QueryHelpers
   def queries
-    ['podrazdeleniya']
+    %w[podrazdeleniya check_for_updates]
   end
 end
