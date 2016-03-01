@@ -6,7 +6,7 @@ module Cache
   def save_record(record)
     topic, offset, key, value = record.topic, record.offset, record.key, record.value
     Cache.pool.with do |conn|
-      value == 'null' ? conn.del("#{topic}:#{key}") :  conn.set("#{topic}:#{key}", value)
+      (value.nil? or value == 'null') ? conn.del("#{topic}:#{key}") : conn.set("#{topic}:#{key}", value)
       conn.zadd(topic, offset, key)
       conn.hmset('topic_offsets', topic, offset)
     end
@@ -49,7 +49,7 @@ module Cache
 
   def _get_record(topic, key)
     record = Cache.pool.with { |conn| conn.get("#{topic}:#{key}") }
-    record.nil? ? { guid: key } : JSON.parse(record)
+    (record.nil? or record.empty?) ? { guid: key } : JSON.parse(record)
   rescue Exception => e
     p "Error get_record Json.parse: #{e.message}"
     nil
