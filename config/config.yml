@@ -1,0 +1,13 @@
+---
+defaults: &defaults
+  app_name: "barcode-mobile"
+  connection:
+    timeout_in_ms: 500
+    kafka: "dev01dsk2.dsk2.picompany.ru:9092"
+    redis: "redis://dev01dsk2.dsk2.picompany.ru:18006"
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults

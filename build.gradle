@@ -1,0 +1,48 @@
+buildscript {
+    repositories { jcenter() }
+
+    dependencies {
+        classpath "com.github.jruby-gradle:jruby-gradle-plugin:1.2.0"
+        classpath "com.github.jruby-gradle:jruby-gradle-jar-plugin:1.2.0"
+    }
+}
+
+plugins {
+    id "java"
+}
+
+apply plugin: 'com.github.jruby-gradle.base'
+apply plugin: 'com.github.jruby-gradle.jar'
+
+//import com.github.jrubygradle.JRubyExec
+
+configurations {
+    compile.extendsFrom jrubyJar
+    jrubyJar.extendsFrom gems
+}
+
+dependencies {
+    // jrubyExec "rubygems:pry:0.10.3"
+    gems 'rubygems:connection_pool:2.2.0'
+    gems 'rubygems:redis:3.2.2'
+    gems 'rubygems:celluloid:0.17.3'
+    gems 'rubygems:puma:2.16.0'
+    gems 'rubygems:grape:0.14.0'
+    gems 'rubygems:pry:0.10.3'
+    gems 'rubygems:settingslogic:2.0.9'
+    jrubyJar 'org.apache.kafka:kafka-clients:0.9.0.1'
+}
+
+// task startApp(type: JRubyExec) {
+//     script "${projectDir}/start.rb"
+// }
+
+jrubyJar {
+    initScript runnable()
+    jrubyVersion '9.0.5.0'
+    from 'config.ru'
+    into('lib') { from 'lib' }
+    // baseName 'barcode-mobile'
+    // version '0.2.0'
+    // initScript "${projectDir}/bin/start.rb"
+}
