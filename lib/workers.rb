@@ -24,7 +24,10 @@ module Workers
       'group.id' => "#{$settings.app_name}-nsi-#{Settings.namespace}",
       'client.id' => "#{$settings.app_name}-nsi-#{Settings.namespace}-#{(1..5).map { rand 9 }.join}"
     }
-    topics = ['1s-references-podrazdeleniya']
+    topics = [
+        '1s-references-podrazdeleniya',
+        '1s-references-sotrudniki'
+    ]
 
     @config ||= Celluloid::Supervision::Configuration.define([
       {
