@@ -4,7 +4,7 @@ class API::V1::Query::GetUpdates < Grape::API
     params do
       requires :id, type: String, desc: 'Unique id for request (UUID)'
       requires :topic, type: String, desc: 'Topic name'
-      requires :offset, type: Integer, desc: 'Offset from client'
+      optional :offset, type: Integer, desc: 'Offset from client', default: -1
     end
 
     get do

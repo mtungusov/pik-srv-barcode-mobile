@@ -26,7 +26,8 @@ module Workers
     }
     topics = [
         '1s-references-podrazdeleniya',
-        '1s-references-sotrudniki'
+        '1s-references-sotrudniki',
+        'barcode-production-in'
     ]
 
     @config ||= Celluloid::Supervision::Configuration.define([
