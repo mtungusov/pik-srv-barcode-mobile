@@ -14,4 +14,5 @@ class API::V1 < Grape::API
   helpers QueryHelpers
   mount API::Ping
   mount API::V1::Query
+  mount API::V1::Commands
 end
