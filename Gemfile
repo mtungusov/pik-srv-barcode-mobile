@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 
+gem 'settingslogic'
+gem 'grape'
+gem 'puma'
 gem 'celluloid'
 gem 'redis'
 gem 'connection_pool'
-gem 'grape'
-
 
 group :development do
  gem 'pry'

@@ -61,12 +61,14 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
       spoon (~> 0.0)
+    puma (3.1.0-java)
     rack (1.6.4)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
     redis (3.2.2)
+    settingslogic (2.0.9)
     slop (3.6.0)
     spoon (0.0.4)
       ffi
@@ -89,7 +91,9 @@ DEPENDENCIES
   connection_pool
   grape
   pry
+  puma
   redis
+  settingslogic
 
 BUNDLED WITH
    1.11.2
