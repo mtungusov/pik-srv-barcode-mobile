@@ -1,5 +1,6 @@
 ---
 defaults: &defaults
+  debug: true
   app_name: "barcode-mobile"
   connection:
     timeout_in_ms: 500
