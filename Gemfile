@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'settingslogic'
 gem 'grape'
+gem 'grape-middleware-logger'
 gem 'puma'
 gem 'celluloid'
 gem 'redis'

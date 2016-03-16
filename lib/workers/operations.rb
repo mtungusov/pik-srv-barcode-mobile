@@ -23,10 +23,10 @@ module Workers
 
   def update_barcode_otk(data_array)
     result = data_array.reduce({offset: -1, processed: 0, errors: []}) do |acc, d|
-      r, e = Celluloid::Actor[:kafka_producer].send_message('barcode-production-out', d[:barcode], d)
+      r, e = Celluloid::Actor[:kafka_producer].send_message('barcode-production-out', d[:guid], d)
       if e.nil?
         # Удалить обработанный штрихкод из EventLog-а
-        _, e_del = Celluloid::Actor[:kafka_producer].send_message('barcode-production-in', d[:barcode])
+        _, e_del = Celluloid::Actor[:kafka_producer].send_message('barcode-production-in', d[:guid])
         if e_del.nil?
           acc[:offset] = r.offset
           acc[:processed] += 1
