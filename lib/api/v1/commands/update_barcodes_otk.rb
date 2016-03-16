@@ -17,6 +17,13 @@ class API::V1::Commands::UpdateBarcodesOtk < Grape::API
       end
     end
 
+    before do
+      if $settings.debug
+        puts "REQUEST: #{request.body.read.to_s}"
+        request.body.rewind
+      end
+    end
+
     post do
       result = Workers.update_barcode_otk declared(params).params[:data]
       { result: result, id: params[:id] }
