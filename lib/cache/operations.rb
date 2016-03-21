@@ -20,11 +20,12 @@ module Cache
   end
 
   def get_updates(params)
+    nil_result = {}
     topic, offset = params[:topic], params[:offset]
     db_offset = _get_offset(topic)
-    return nil unless db_offset
+    return nil_result unless db_offset
     data = _get_updates(topic, offset.next)
-    return nil if data.nil? or data.empty?
+    return nil_result if data.nil? or data.empty?
     { topic: topic, offset: db_offset, data: data }
   end
 
