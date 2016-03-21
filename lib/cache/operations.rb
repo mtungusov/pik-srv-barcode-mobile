@@ -34,8 +34,9 @@ module Cache
   end
 
   def _check_for_update_topic(topic, offset)
+    nil_result = {}
     db_offset = _get_offset(topic)
-    (db_offset.nil? or (offset.to_i == db_offset.to_i)) ? nil : { topic => db_offset.to_i }
+    (db_offset.nil? or (offset.to_i == db_offset.to_i)) ? nil_result : { topic => db_offset.to_i }
   end
 
   def _check_for_update_all
