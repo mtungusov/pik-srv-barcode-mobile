@@ -30,6 +30,24 @@ module Db
     return [r, err]
   end
 
+  def add_event(event_log_name:, event:)
+    r, err = nil, nil
+    raise 'invalid event log name' unless EVENT_LOGS.include? event_log_name
+    sql = "INSERT INTO #{event_log_name} (event_key, event_type, event_val) VALUES (?, ?, ?)"
+
+    pstmt = con.prepareStatement sql
+    pstmt.setNString(1, event[:event_key])
+    pstmt.setNString(2, event[:event_type])
+    pstmt.setNString(3, event[:event_val])
+
+    r = pstmt.executeUpdate
+  rescue Exception => e
+    err = e.message
+  ensure
+    pstmt.close if pstmt
+    return [r, err]
+  end
+
   def _events(result_set)
     r = []
     while result_set.next
