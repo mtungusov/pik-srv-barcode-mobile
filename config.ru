@@ -13,15 +13,24 @@ require_relative 'lib/settings'
 puts "Namespace: #{Settings.namespace}"
 puts "App: #{$settings.app_name}"
 
-require_relative 'lib/trap_signals'
+require_relative 'lib/db'
 
-require_relative 'lib/cache'
-Cache::pool({ url: $settings.connection.redis })
+params = { host: $settings.sqlserver.host, db: $settings.sqlserver.db, user: $settings.sqlserver.user, pass: $settings.sqlserver.pass }
 
-require_relative 'lib/workers'
-Workers.start_all
+Db.con params
 
-require_relative 'lib/api'
-run API::App
+require 'pry'
+binding.pry
 
-require_relative 'lib/at_exit_actions'
+# require_relative 'lib/trap_signals'
+
+# require_relative 'lib/cache'
+# Cache::pool({ url: $settings.connection.redis })
+
+# require_relative 'lib/workers'
+# Workers.start_all
+
+# require_relative 'lib/api'
+# run API::App
+
+# require_relative 'lib/at_exit_actions'

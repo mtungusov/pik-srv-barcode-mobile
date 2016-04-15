@@ -6,6 +6,11 @@ defaults: &defaults
     timeout_in_ms: 500
     kafka: "dev01dsk2.dsk2.picompany.ru:9092"
     redis: "redis://dev01dsk2.dsk2.picompany.ru:18006"
+  sqlserver:
+    host: "1cdev01sql.dsk2.picompany.ru"
+    db: "barcode_dev"
+    user: "barcode_app"
+    pass: "w2ABLmUMq9capxZT"
 
 development:
   <<: *defaults
