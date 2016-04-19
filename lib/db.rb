@@ -2,6 +2,8 @@ module Db; end
 
 require_relative 'db/mssql'
 
+require 'json'
+
 module Db
   EVENT_LOGS = %w{EventLogTest EventLog1S EventLogTSD}
 
@@ -61,7 +63,15 @@ module Db
       offset: row.getLong('offset'),
       event_key: row.getNString('event_key'),
       event_type: row.getNString('event_type'),
-      event_val: row.getNString('event_val')
+      event_val: _event_val(row.getNString('event_val'))
     }
+  end
+
+  def _event_val(str)
+    result = JSON.parse str.gsub('\\', '')
+  rescue
+    result = str
+  ensure
+    return result
   end
 end

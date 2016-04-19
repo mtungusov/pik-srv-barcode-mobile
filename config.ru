@@ -16,11 +16,10 @@ puts "App: #{$settings.app_name}"
 require_relative 'lib/db'
 
 params = { host: $settings.sqlserver.host, db: $settings.sqlserver.db, user: $settings.sqlserver.user, pass: $settings.sqlserver.pass }
-
 Db.con params
 
-require 'pry'
-binding.pry
+# require 'pry'
+# binding.pry
 
 # require_relative 'lib/trap_signals'
 
@@ -30,7 +29,7 @@ binding.pry
 # require_relative 'lib/workers'
 # Workers.start_all
 
-# require_relative 'lib/api'
-# run API::App
+require_relative 'lib/api'
+run API::App
 
-# require_relative 'lib/at_exit_actions'
+require_relative 'lib/at_exit_actions'

@@ -2,10 +2,10 @@
 defaults: &defaults
   debug: true
   app_name: "barcode-mobile"
-  connection:
-    timeout_in_ms: 500
-    kafka: "dev01dsk2.dsk2.picompany.ru:9092"
-    redis: "redis://dev01dsk2.dsk2.picompany.ru:18006"
+#  connection:
+#    timeout_in_ms: 500
+#    kafka: "dev01dsk2.dsk2.picompany.ru:9092"
+#    redis: "redis://dev01dsk2.dsk2.picompany.ru:18006"
   sqlserver:
     host: "1cdev01sql.dsk2.picompany.ru"
     db: "barcode_dev"

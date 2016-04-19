@@ -4,9 +4,9 @@ gem 'settingslogic'
 gem 'grape'
 gem 'grape-middleware-logger'
 gem 'puma'
-gem 'celluloid'
-gem 'redis'
-gem 'connection_pool'
+# gem 'celluloid'
+# gem 'redis'
+# gem 'connection_pool'
 
 group :development do
  gem 'pry'

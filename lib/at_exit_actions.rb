@@ -1,6 +1,6 @@
 at_exit {
   puts "Terminate:at_exit:start"
-  sleep 5
+  sleep 1
   puts "Terminate:at_exit:end"
   exit!
 }

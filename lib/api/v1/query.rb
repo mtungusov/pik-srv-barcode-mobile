@@ -11,7 +11,7 @@ class API::V1::Query < Grape::API
       { result: queries }
     end
 
-    mount API::V1::Query::QueryForUpdates
-    mount API::V1::Query::GetUpdates
+    # mount API::V1::Query::QueryForUpdates
+    mount API::V1::Query::Events
   end
 end

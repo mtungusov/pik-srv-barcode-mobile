@@ -1,7 +1,6 @@
 module Db
   class MSSql
-    DB_DS = Java::ComMicrosoftSqlserverJdbc::SQLServerDataSource
-
+    DB_DS = Java::com.microsoft.sqlserver.jdbc::SQLServerDataSource
     attr_reader :con
 
     def initialize(params)

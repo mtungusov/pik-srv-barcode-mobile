@@ -10,5 +10,5 @@ class API::V1 < Grape::API
   version 'v1', using: :path
   mount API::Ping
   mount API::V1::Query
-  mount API::V1::Commands
+  # mount API::V1::Commands
 end
