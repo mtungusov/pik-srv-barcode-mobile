@@ -7,6 +7,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    avro (1.8.0)
+      multi_json
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -68,6 +70,7 @@ PLATFORMS
   java
 
 DEPENDENCIES
+  avro
   grape
   grape-middleware-logger
   pry

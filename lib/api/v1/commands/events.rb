@@ -1,6 +1,6 @@
 class API::V1::Commands::Events < Grape::API
   resource :events do
-    desc 'Послать события в DB'
+    desc 'Послать события ТСД в DB'
     params do
       requires :id, type: String, desc: 'Unique id for request (UUID)'
       requires :params, type: Hash do
@@ -20,9 +20,12 @@ class API::V1::Commands::Events < Grape::API
     end
 
     post do
-      # result = Workers.update_barcode_otk declared(params).params[:data]
-      result = [1,2,3,4,5]
-      { result: {processed: result}, id: params[:id] }
+      # For testing EventLog1S!!!
+      # For prod change to EventLogTSD!!!
+      r, err = Db.add_events 'EventLog1S', declared(params).params[:data]
+      result = { result: {processed: r}, id: params[:id] }
+      result.merge!({result: {errors: err}}) unless err.empty?
+      return result
     end
   end
 end

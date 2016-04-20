@@ -4,6 +4,8 @@ gem 'settingslogic'
 gem 'grape'
 gem 'grape-middleware-logger'
 gem 'puma'
+
+gem 'avro'
 # gem 'celluloid'
 # gem 'redis'
 # gem 'connection_pool'

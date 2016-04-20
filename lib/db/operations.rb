@@ -28,15 +28,34 @@ module Db
     return [r, err]
   end
 
-  def add_event(event_log_name:, event:)
+  def add_events(event_log_name, events=[])
+    return [[], ['invalid event log name']] unless EVENT_LOGS.include? event_log_name
+    r, err = [], []
+
+    events.select do |event|
+      # v_err = _validate_event_val(event['event_val'])
+      # err << { event_key: event['event_key'], message: v_err } if v_err
+      # v_err.nil?
+      true
+    end.each do |event|
+      _, db_err = _add_event(event_log_name, event)
+      if db_err
+        err << {event_key: event['event_key'], message: db_err}
+      else
+        r << event['event_key']
+      end
+    end
+    return [r, err]
+  end
+
+  def _add_event(event_log_name, event)
     r, err = nil, nil
-    raise 'invalid event log name' unless EVENT_LOGS.include? event_log_name
     sql = "INSERT INTO #{event_log_name} (event_key, event_type, event_val) VALUES (?, ?, ?)"
 
     pstmt = con.prepareStatement sql
-    pstmt.setNString(1, event[:event_key])
-    pstmt.setNString(2, event[:event_type])
-    pstmt.setNString(3, event[:event_val].to_json)
+    pstmt.setNString(1, event['event_key'])
+    pstmt.setNString(2, event['event_type'])
+    pstmt.setNString(3, event['event_val'].to_json)
 
     r = pstmt.executeUpdate
   rescue Exception => e
