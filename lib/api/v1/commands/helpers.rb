@@ -1,7 +1,7 @@
 module CommandsHelpers
   def commands
     [
-        :update_barcodes_otk
+        :events
     ]
   end
 end

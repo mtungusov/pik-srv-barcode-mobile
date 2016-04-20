@@ -1,6 +1,6 @@
 class API::V1::Query::Events < Grape::API
   resource :events do
-    desc 'Получить события из базы'
+    desc 'Получить события из DB'
     params do
       requires :device, type: String, desc: 'Device serial number'
       optional :offset, type: Integer, desc: 'Offset from client', default: 0
