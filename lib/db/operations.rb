@@ -33,10 +33,9 @@ module Db
     r, err = [], []
 
     events.select do |event|
-      # v_err = _validate_event_val(event['event_val'])
-      # err << { event_key: event['event_key'], message: v_err } if v_err
-      # v_err.nil?
-      true
+      valid = Validator::Event.valid? event
+      err << { event_key: event['event_key'], message: 'invalid event' } unless valid
+      valid
     end.each do |event|
       _, db_err = _add_event(event_log_name, event)
       if db_err

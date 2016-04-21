@@ -18,6 +18,8 @@ require_relative 'lib/db'
 params = { host: $settings.sqlserver.host, db: $settings.sqlserver.db, user: $settings.sqlserver.user, pass: $settings.sqlserver.pass }
 Db.con params
 
+require_relative 'lib/validator'
+
 # require 'pry'
 # binding.pry
 
