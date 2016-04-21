@@ -7,7 +7,7 @@ class API::V1::Query::Events < Grape::API
     end
 
     get do
-      r, err = Db.get_events event_log_name: 'EventLog1S', offset: params[:offset]
+      r, err = Db.get_events 'EventLog1S', params[:offset]
       result = {
           result: {data: r}
       }

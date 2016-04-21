@@ -6,9 +6,10 @@ gem 'grape-middleware-logger'
 gem 'puma'
 
 gem 'avro'
+gem 'connection_pool'
+
 # gem 'celluloid'
 # gem 'redis'
-# gem 'connection_pool'
 
 group :development do
  gem 'pry'

@@ -16,10 +16,11 @@ puts "App: #{$settings.app_name}"
 require_relative 'lib/db'
 
 params = { host: $settings.sqlserver.host, db: $settings.sqlserver.db, user: $settings.sqlserver.user, pass: $settings.sqlserver.pass }
-Db.con params
+Db.init params
 
 require 'pry'
 binding.pry
+
 
 require_relative 'lib/validator'
 

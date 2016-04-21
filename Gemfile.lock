@@ -17,6 +17,7 @@ GEM
     coderay (1.1.1)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
+    connection_pool (2.2.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     enumerable-lazy (0.0.1)
@@ -71,6 +72,7 @@ PLATFORMS
 
 DEPENDENCIES
   avro
+  connection_pool
   grape
   grape-middleware-logger
   pry

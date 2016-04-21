@@ -1,23 +1,33 @@
 module Db
   class MSSql
     DB_DS = Java::com.microsoft.sqlserver.jdbc::SQLServerDataSource
-    attr_reader :con
+    # attr_reader :con
 
     def initialize(params)
-      @con = _get_connection params
+      @ds = _get_ds params
+      connect
+    end
+
+    def connect
+      @con = @ds.getConnection
+    end
+
+    def get
+      connect if @con and @con.closed?
+      @con
     end
 
     def close
       @con.close
     end
 
-    def _get_connection(host:, db:, user:, pass:)
+    def _get_ds(host:, db:, user:, pass:)
       ds = DB_DS.new
       ds.setServerName host
       ds.setDatabaseName db
       ds.setUser user
       ds.setPassword pass
-      ds.getConnection
+      ds
     end
   end
 end

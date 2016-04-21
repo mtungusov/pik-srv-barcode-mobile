@@ -1,22 +1,44 @@
 require 'json'
+require 'connection_pool'
 
 module Db
   EVENT_LOGS = %w{EventLogTest EventLog1S EventLogTSD}
 
   module_function
 
-  def con(params={})
-    @@db_con ||= MSSql.new(params).con
+  def init(params={})
+    # @@db = MSSql.new(params)
+    @@db_pool = ConnectionPool.new(size: 5, timeout: 5) { MSSql.new(params) }
   end
 
-  def get_events(event_log_name:, offset: 0)
+  def pool
+    @@db_pool
+  end
+
+  # def db
+  #   @@db
+  # end
+  #
+  # def reconnect
+  #   @@db.connect if @@db and @@db.con.closed?
+  # end
+  #
+  # def con
+  #   @@db.con
+  # end
+
+  def get_events(event_log_name, offset=0)
     r, err = [], nil
     raise 'invalid event log name' unless EVENT_LOGS.include? event_log_name
     sql = "SELECT * FROM #{event_log_name} where offset > ?"
 
-    pstmt = con.prepareStatement sql
-    pstmt.setLong(1, offset)
-    rs = pstmt.executeQuery
+    pstmt, rs = nil, nil
+
+    pool.with do |conn|
+      pstmt = conn.get.prepareStatement sql
+      pstmt.setLong(1, offset)
+      rs = pstmt.executeQuery
+    end
 
     r = _events rs
   rescue Exception => e
@@ -34,7 +56,7 @@ module Db
 
     events.select do |event|
       valid = Validator::Event.valid? event
-      err << { event_key: event['event_key'], message: 'invalid event' } unless valid
+      err << {event_key: event['event_key'], message: 'invalid event'} unless valid
       valid
     end.each do |event|
       _, db_err = _add_event(event_log_name, event)
