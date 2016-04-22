@@ -7,25 +7,12 @@ module Db
   module_function
 
   def init(params={})
-    # @@db = MSSql.new(params)
     @@db_pool = ConnectionPool.new(size: 5, timeout: 5) { MSSql.new(params) }
   end
 
   def pool
     @@db_pool
   end
-
-  # def db
-  #   @@db
-  # end
-  #
-  # def reconnect
-  #   @@db.connect if @@db and @@db.con.closed?
-  # end
-  #
-  # def con
-  #   @@db.con
-  # end
 
   def get_events(event_log_name, offset=0)
     r, err = [], nil
@@ -34,8 +21,8 @@ module Db
 
     pstmt, rs = nil, nil
 
-    pool.with do |conn|
-      pstmt = conn.get.prepareStatement sql
+    pool.with do |con|
+      pstmt = con.prepare_statement sql
       pstmt.setLong(1, offset)
       rs = pstmt.executeQuery
     end
@@ -52,38 +39,52 @@ module Db
 
   def add_events(event_log_name, events=[])
     return [[], ['invalid event log name']] unless EVENT_LOGS.include? event_log_name
-    r, err = [], []
+    valid_events, err = _validate_evetns(events)
+    added_event_keys, db_err = pool.with do |con|
+      _add_events_db(con, event_log_name, valid_events)
+    end
 
-    events.select do |event|
+    [added_event_keys, err + db_err]
+  end
+
+  def _validate_evetns(events)
+    err = []
+    r = events.select do |event|
       valid = Validator::Event.valid? event
       err << {event_key: event['event_key'], message: 'invalid event'} unless valid
       valid
-    end.each do |event|
-      _, db_err = _add_event(event_log_name, event)
+    end
+    [r, err]
+  end
+
+  def _add_events_db(connection, event_log_name, events)
+    r, err = [], []
+    sql = "INSERT INTO #{event_log_name} (event_key, event_type, event_val) VALUES (?, ?, ?)"
+    pstmt = connection.prepare_statement sql
+    events.each do |event|
+      db_r, db_err = _add_event_db(pstmt, event)
       if db_err
         err << {event_key: event['event_key'], message: db_err}
       else
-        r << event['event_key']
+        r << db_r
       end
     end
-    return [r, err]
-  end
-
-  def _add_event(event_log_name, event)
-    r, err = nil, nil
-    sql = "INSERT INTO #{event_log_name} (event_key, event_type, event_val) VALUES (?, ?, ?)"
-
-    pstmt = con.prepareStatement sql
-    pstmt.setNString(1, event['event_key'])
-    pstmt.setNString(2, event['event_type'])
-    pstmt.setNString(3, event['event_val'].to_json)
-
-    r = pstmt.executeUpdate
   rescue Exception => e
-    err = e.message
+    err << e.message
   ensure
     pstmt.close if pstmt
     return [r, err]
+  end
+
+  def _add_event_db(pstmt, event)
+    event_key = event['event_key']
+    pstmt.setNString(1, event_key)
+    pstmt.setNString(2, event['event_type'])
+    pstmt.setNString(3, event['event_val'].to_json)
+    pstmt.executeUpdate
+    [event_key, nil]
+  rescue Exception => e
+    return [nil, e.message]
   end
 
   def _events(result_set)

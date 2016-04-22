@@ -1,24 +1,23 @@
 module Db
   class MSSql
     DB_DS = Java::com.microsoft.sqlserver.jdbc::SQLServerDataSource
-    # attr_reader :con
+    TIMEOUT = 3
 
     def initialize(params)
       @ds = _get_ds params
-      connect
     end
 
-    def connect
-      @con = @ds.getConnection
-    end
-
-    def get
-      connect if @con and @con.closed?
-      @con
+    def prepare_statement(args)
+      _connection.prepareStatement args
     end
 
     def close
       @con.close
+    end
+
+    def _connection
+      @con = @ds.getConnection if @con.nil? or !@con.valid?(TIMEOUT)
+      @con
     end
 
     def _get_ds(host:, db:, user:, pass:)
@@ -27,6 +26,7 @@ module Db
       ds.setDatabaseName db
       ds.setUser user
       ds.setPassword pass
+      ds.setLoginTimeout TIMEOUT
       ds
     end
   end
