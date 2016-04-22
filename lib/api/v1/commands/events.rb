@@ -20,9 +20,7 @@ class API::V1::Commands::Events < Grape::API
     end
 
     post do
-      # For testing EventLog1S!!!
-      # For prod change to EventLogTSD!!!
-      r, err = Db.add_events 'EventLog1S', declared(params).params[:data]
+      r, err = Db.add_events 'EventLogTSD', declared(params).params[:data]
       result = { result: {processed: r}, id: params[:id] }
       result.merge!({errors: err}) unless err.empty?
       return result

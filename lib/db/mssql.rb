@@ -12,7 +12,7 @@ module Db
     end
 
     def close
-      @con.close
+      @con.close if @con and !@con.closed?
     end
 
     def _connection
