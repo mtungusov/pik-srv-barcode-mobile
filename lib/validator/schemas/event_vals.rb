@@ -31,24 +31,19 @@ module Validator::Schemas
       fields: [
           {name: "guid", type: "string"},
           {name: "name", type: "string"},
-          {
-              name: "cells",
-              type:
-                  {
-                      type: "array",
-                      name: "WarehouseCell",
-                      items: {
-                          type: "record",
-                          name: "WarehouseCellElement",
-                          fields: [
-                              {name: "guid", type: "string"},
-                              {name: "barcode", type: "string"},
-                              {name: "name", type: "string"}
-                          ]
-                      }
-                  }
-          }
       ]
+  }
+
+  VAL_WAREHOUSECELLUPDATED = {
+      name: "EventValWarehouseCellUpdated",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "warehouse_guid", type: "string"},
+          {name: "name", type: "string"},
+          {name: "barcode", type: "string"}
+      ]
+
   }
 
   VAL_BARCODEMANUFACTURED = {

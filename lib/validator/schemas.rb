@@ -1,8 +1,7 @@
 require_relative 'schemas/event_vals'
 
 module Validator::Schemas
-  EVENT_TYPES_1S = %w{ UserTSDUpdated WarehouseUpdated BarcodeManufactured BarcodeMoved }
-  # EVENT_TYPES_1S = %w{ BarcodeMoved }
+  EVENT_TYPES_1S = %w{ UserTSDUpdated WarehouseUpdated WarehouseCellUpdated BarcodeManufactured BarcodeMoved }
   EVENT_TYPES_TSD = %w{ TSD_BarcodeMoved }
 
   T_EVENT_TYPE = {type: "enum"}
@@ -17,6 +16,7 @@ module Validator::Schemas
   EVENT_VALS = {
       'UserTSDUpdated' => VAL_USERTSDUPDATED,
       'WarehouseUpdated' => VAL_WAREHOUSEUPDATED,
+      'WarehouseCellUpdated' => VAL_WAREHOUSECELLUPDATED,
       'BarcodeManufactured' => VAL_BARCODEMANUFACTURED,
       'BarcodeMoved' => VAL_BARCODEMOVED,
       'TSD_BarcodeMoved' => VAL_TSD_BARCODEMOVED

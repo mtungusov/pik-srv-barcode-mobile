@@ -17,7 +17,7 @@ module Db
   def get_events(event_log_name, offset=0)
     r, err = [], nil
     raise 'invalid event log name' unless EVENT_LOGS.include? event_log_name
-    sql = "SELECT * FROM #{event_log_name} where offset > ?"
+    sql = "SELECT * FROM #{event_log_name} where offset > ? AND event_type IN (\'#{Validator::Schemas::EVENT_TYPES_1S.join('\',\'')}\') ORDER BY offset"
 
     pstmt, rs = nil, nil
 
@@ -27,7 +27,7 @@ module Db
       rs = pstmt.executeQuery
     end
 
-    r = _events rs
+    r, err = _events rs
   rescue Exception => e
     r = []
     err = e.message
@@ -39,7 +39,7 @@ module Db
 
   def add_events(event_log_name, events=[])
     return [[], ['invalid event log name']] unless EVENT_LOGS.include? event_log_name
-    valid_events, err = _validate_evetns(events)
+    valid_events, err = _validate_events(events)
     added_event_keys, db_err = pool.with do |con|
       _add_events_db(con, event_log_name, valid_events)
     end
@@ -47,7 +47,7 @@ module Db
     [added_event_keys, err + db_err]
   end
 
-  def _validate_evetns(events)
+  def _validate_events(events)
     err = []
     r = events.select do |event|
       valid = Validator::Event.valid? event
@@ -88,11 +88,17 @@ module Db
   end
 
   def _events(result_set)
-    r = []
+    r, db_err = [], []
     while result_set.next
-      r << _event(result_set)
+      ev = _event(result_set)
+      if Validator::Event.valid? JSON(ev.to_json)
+        r << ev
+      else
+        db_err << {event_key: ev[:event_key], message: "invalid event into DB"}
+      end
     end
-    r
+    err = db_err.empty? ? nil : db_err
+    return [r, err]
   end
 
   def _event(row)
