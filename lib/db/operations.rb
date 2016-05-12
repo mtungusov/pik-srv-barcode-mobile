@@ -3,6 +3,7 @@ require 'connection_pool'
 
 module Db
   EVENT_LOGS = %w{EventLogTest EventLog1S EventLogTSD}
+  TOP_QUERY_RECORS = 1000
 
   module_function
 
@@ -17,7 +18,7 @@ module Db
   def get_events(event_log_name, offset=0)
     r, err = [], nil
     raise 'invalid event log name' unless EVENT_LOGS.include? event_log_name
-    sql = "SELECT * FROM #{event_log_name} where offset > ? AND event_type IN (\'#{Validator::Schemas::EVENT_TYPES_1S.join('\',\'')}\') ORDER BY offset"
+    sql = "SELECT TOP #{TOP_QUERY_RECORS} * FROM #{event_log_name} where offset > ? AND event_type IN (\'#{Validator::Schemas::EVENT_TYPES_1S.join('\',\'')}\') ORDER BY offset"
 
     pstmt, rs = nil, nil
 
