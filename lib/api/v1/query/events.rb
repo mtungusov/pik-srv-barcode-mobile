@@ -1,3 +1,5 @@
+require_relative 'events/events_rest'
+
 class API::V1::Query::Events < Grape::API
   resource :events do
     desc 'Получить события из DB'
@@ -14,5 +16,7 @@ class API::V1::Query::Events < Grape::API
       result.merge!({error: err}) if err
       return result
     end
+
+    mount API::V1::Query::EventsRest
   end
 end

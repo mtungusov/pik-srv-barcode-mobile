@@ -38,6 +38,36 @@ module Db
     return [r, err]
   end
 
+  def get_events_rest(event_log_name, device_guid, offset=0)
+    r = nil
+    raise 'invalid event log name' unless EVENT_LOGS.include? event_log_name
+    sql_event_type = "(\'#{_event_types_for_device(device_guid).join('\',\'')}\')"
+    sql = "SELECT count(offset) as rest FROM #{event_log_name} where offset > ? AND event_type IN #{sql_event_type}"
+
+    pstmt, rs = nil, nil
+
+    pool.with do |con|
+      pstmt = con.prepare_statement sql
+      pstmt.setLong(1, offset)
+      rs = pstmt.executeQuery
+    end
+
+    while rs.next
+      r = rs.getLong('rest')
+    end
+
+  rescue Exception => e
+    err = e.message
+  ensure
+    rs.close if rs
+    pstmt.close if pstmt
+    return [r, err]
+  end
+
+  def _event_types_for_device(device_guid)
+    Validator::Schemas::EVENT_TYPES_1S
+  end
+
   def add_events(event_log_name, events=[])
     return [[], ['invalid event log name']] unless EVENT_LOGS.include? event_log_name
     valid_events, err = _validate_events(events)
