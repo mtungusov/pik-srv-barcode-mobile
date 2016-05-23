@@ -20,6 +20,7 @@ class API::V1::Commands::Events < Grape::API
     end
 
     post do
+      authenticate!
       r, err = Db.add_events 'EventLogTSD', declared(params).params[:data]
       result = { result: {processed: r}, id: params[:id] }
       result.merge!({errors: err}) unless err.empty?
