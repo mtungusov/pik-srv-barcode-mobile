@@ -15,10 +15,11 @@ module Db
     @@db_pool
   end
 
-  def get_events(event_log_name, offset=0)
+  def get_events(event_log_name, device_guid, offset=0)
     r, err = [], nil
     raise 'invalid event log name' unless EVENT_LOGS.include? event_log_name
-    sql = "SELECT TOP #{TOP_QUERY_RECORS} * FROM #{event_log_name} where offset > ? AND event_type IN (\'#{Validator::Schemas::EVENT_TYPES_1S.join('\',\'')}\') ORDER BY offset"
+    sql_event_type = "(\'#{_event_types_for_device(device_guid).join('\',\'')}\')"
+    sql = "SELECT TOP #{TOP_QUERY_RECORS} * FROM #{event_log_name} where offset > ? AND event_type IN #{sql_event_type} ORDER BY offset"
 
     pstmt, rs = nil, nil
 
@@ -65,7 +66,7 @@ module Db
   end
 
   def _event_types_for_device(device_guid)
-    Validator::Schemas::EVENT_TYPES_1S
+    Validator::Schemas::EVENT_TYPES_1S_WAREHOUSE_IN | Validator::Schemas::EVENT_TYPES_1S_WAREHOUSE_OUT
   end
 
   def add_events(event_log_name, events=[])

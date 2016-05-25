@@ -89,4 +89,177 @@ module Validator::Schemas
           {name: "change_at", type: "long"}
       ]
   }
+
+  VAL_SHIPMENTTICKETCREATED = {
+      name: "EventValShipmentTicketCreated",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "warehouse_guid", type: "string"},
+          {name: "warehouse_name", type: "string"},
+          {name: "transport_plate", type: "string"},
+          {name: "change_at", type: "long"},
+          {
+              name: "items",
+              type:
+                  {
+                      type: "array",
+                      name: "ShipmentTicketItems",
+                      items: {
+                          type: "record",
+                          name: "ShipmentTicketItem",
+                          fields: [
+                              {name: "guid_nomenclature", type: "string"},
+                              {name: "nomenclature", type: "string"}
+                          ]
+                      }
+                  }
+          }
+      ]
+  }
+
+  VAL_SHIPMENTTICKETCOLLECTED = {
+      name: "EventValShipmentTicketCollected",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "warehouse_guid", type: "string"},
+          {name: "warehouse_name", type: "string"},
+          {name: "transport_plate", type: "string"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"},
+          {name: "change_at", type: "long"},
+          {
+              name: "items_loaded",
+              type:
+                  {
+                      type: "array",
+                      name: "ShipmentTicketItems",
+                      items: {
+                          type: "record",
+                          name: "ShipmentTicketCollectedItem",
+                          fields: [
+                              {name: "barcode", type: "string"},
+                              {name: "guid_nomenclature", type: "string"},
+                              {name: "nomenclature", type: "string"}
+                          ]
+                      }
+                  }
+          },
+          {
+              name: "items_not_loaded",
+              type:
+                  {
+                      type: "array",
+                      name: "ShipmentTicketItems",
+                      items: {
+                          type: "record",
+                          name: "ShipmentTicketCollectedNotLoadedItem",
+                          fields: [
+                              {name: "guid_nomenclature", type: "string"},
+                              {name: "nomenclature", type: "string"}
+                          ]
+                      }
+                  }
+          }
+      ]
+  }
+
+  VAL_SHIPMENTTICKETCONFIRMED = {
+      name: "EventValShipmentTicketConfirmed",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "transport_plate", type: "string"},
+          {name: "change_at", type: "long"},
+      ]
+  }
+
+  VAL_SHIPMENTTICKETCANCELLED = {
+      name: "EventValShipmentTicketCancelled",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "transport_plate", type: "string"},
+          {name: "change_at", type: "long"},
+      ]
+  }
+
+  VAL_TSD_SHIPMENTTICKETACCEPTED = {
+      name: "EventValTSD_ShipmentTicketAccepted",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "warehouse_guid", type: "string"},
+          {name: "warehouse_name", type: "string"},
+          {name: "transport_plate", type: "string"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"},
+          {name: "change_at", type: "long"}
+      ]
+  }
+
+  VAL_TSD_SHIPMENTTICKETCOLLECTED = {
+      name: "EventValTSD_ShipmentTicketCollected",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "warehouse_guid", type: "string"},
+          {name: "warehouse_name", type: "string"},
+          {name: "transport_plate", type: "string"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"},
+          {name: "change_at", type: "long"},
+          {
+              name: "items_loaded",
+              type:
+                  {
+                      type: "array",
+                      name: "ShipmentTicketItems",
+                      items: {
+                          type: "record",
+                          name: "ShipmentTicketTSDCollectedItem",
+                          fields: [
+                              {name: "barcode", type: "string"},
+                              {name: "nomenclature", type: "string"}
+                          ]
+                      }
+                  }
+          }
+      ]
+  }
+
+  VAL_TSD_SHIPMENTTICKETCONFIRMED = {
+      name: "EventValTSD_ShipmentTicketConfirmed",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"},
+          {name: "change_at", type: "long"}
+      ]
+  }
+
+  VAL_TSD_SHIPMENTTICKEDASSEMBLYCANCELLED = {
+      name: "EventValTSD_ShipmentTickedAssemblyCancelled",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"},
+          {name: "change_at", type: "long"}
+      ]
+  }
+
+  VAL_TSD_SHIPMENTTICKEDCANCELLED = {
+      name: "EventValTSD_ShipmentTickedCancelled",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"},
+          {name: "change_at", type: "long"}
+      ]
+  }
+
 end

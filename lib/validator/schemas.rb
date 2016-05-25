@@ -1,8 +1,14 @@
 require_relative 'schemas/event_vals'
 
 module Validator::Schemas
-  EVENT_TYPES_1S = %w{ UserTSDUpdated WarehouseUpdated WarehouseCellUpdated BarcodeManufactured BarcodeMoved }
-  EVENT_TYPES_TSD = %w{ TSD_BarcodeMoved }
+  EVENT_TYPES_1S_WAREHOUSE_IN = %w{ UserTSDUpdated WarehouseUpdated WarehouseCellUpdated BarcodeManufactured BarcodeMoved }
+  EVENT_TYPES_1S_WAREHOUSE_OUT = %w{ ShipmentTicketCreated ShipmentTicketCollected ShipmentTicketConfirmed ShipmentTicketCancelled }
+  EVENT_TYPES_TSD = %w{ TSD_BarcodeMoved
+                        TSD_ShipmentTicketAccepted
+                        TSD_ShipmentTicketCollected
+                        TSD_ShipmentTicketConfirmed
+                        TSD_ShipmentTickedAssemblyCancelled
+                        TSD_ShipmentTickedCancelled }
 
   T_EVENT_TYPE = {type: "enum"}
 
@@ -19,13 +25,22 @@ module Validator::Schemas
       'WarehouseCellUpdated' => VAL_WAREHOUSECELLUPDATED,
       'BarcodeManufactured' => VAL_BARCODEMANUFACTURED,
       'BarcodeMoved' => VAL_BARCODEMOVED,
-      'TSD_BarcodeMoved' => VAL_TSD_BARCODEMOVED
+      'TSD_BarcodeMoved' => VAL_TSD_BARCODEMOVED,
+      'ShipmentTicketCreated' => VAL_SHIPMENTTICKETCREATED,
+      'ShipmentTicketCollected' => VAL_SHIPMENTTICKETCOLLECTED,
+      'ShipmentTicketConfirmed' => VAL_SHIPMENTTICKETCONFIRMED,
+      'ShipmentTicketCancelled' => VAL_SHIPMENTTICKETCANCELLED,
+      'TSD_ShipmentTicketAccepted' => VAL_TSD_SHIPMENTTICKETACCEPTED,
+      'TSD_ShipmentTicketCollected' => VAL_TSD_SHIPMENTTICKETCOLLECTED,
+      'TSD_ShipmentTicketConfirmed' => VAL_TSD_SHIPMENTTICKETCONFIRMED,
+      'TSD_ShipmentTickedAssemblyCancelled' => VAL_TSD_SHIPMENTTICKEDASSEMBLYCANCELLED,
+      'TSD_ShipmentTickedCancelled' => VAL_TSD_SHIPMENTTICKEDCANCELLED
   }
 
   module_function
 
   def get(name)
-    @@all_schemas ||= (EVENT_TYPES_1S | EVENT_TYPES_TSD).reduce({}) { |acc, et| acc[et] = _create_schema(et); acc }
+    @@all_schemas ||= (EVENT_TYPES_1S_WAREHOUSE_IN | EVENT_TYPES_1S_WAREHOUSE_OUT | EVENT_TYPES_TSD).reduce({}) { |acc, et| acc[et] = _create_schema(et); acc }
     @@all_schemas[name]
   end
 
