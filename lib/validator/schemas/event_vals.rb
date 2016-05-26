@@ -240,8 +240,8 @@ module Validator::Schemas
       ]
   }
 
-  VAL_TSD_SHIPMENTTICKEDASSEMBLYCANCELLED = {
-      name: "EventValTSD_ShipmentTickedAssemblyCancelled",
+  VAL_TSD_SHIPMENTTICKETASSEMBLYCANCELLED = {
+      name: "EventValTSD_ShipmentTicketAssemblyCancelled",
       type: "record",
       fields: [
           {name: "guid", type: "string"},
@@ -251,8 +251,8 @@ module Validator::Schemas
       ]
   }
 
-  VAL_TSD_SHIPMENTTICKEDCANCELLED = {
-      name: "EventValTSD_ShipmentTickedCancelled",
+  VAL_TSD_SHIPMENTTICKETCANCELLED = {
+      name: "EventValTSD_ShipmentTicketCancelled",
       type: "record",
       fields: [
           {name: "guid", type: "string"},
