@@ -7,8 +7,8 @@ module Validator::Schemas
                         TSD_ShipmentTicketAccepted
                         TSD_ShipmentTicketCollected
                         TSD_ShipmentTicketConfirmed
-                        TSD_ShipmentTickedAssemblyCancelled
-                        TSD_ShipmentTickedCancelled }
+                        TSD_ShipmentTicketAssemblyCancelled
+                        TSD_ShipmentTicketCancelled }
 
   T_EVENT_TYPE = {type: "enum"}
 
@@ -33,8 +33,8 @@ module Validator::Schemas
       'TSD_ShipmentTicketAccepted' => VAL_TSD_SHIPMENTTICKETACCEPTED,
       'TSD_ShipmentTicketCollected' => VAL_TSD_SHIPMENTTICKETCOLLECTED,
       'TSD_ShipmentTicketConfirmed' => VAL_TSD_SHIPMENTTICKETCONFIRMED,
-      'TSD_ShipmentTickedAssemblyCancelled' => VAL_TSD_SHIPMENTTICKEDASSEMBLYCANCELLED,
-      'TSD_ShipmentTickedCancelled' => VAL_TSD_SHIPMENTTICKEDCANCELLED
+      'TSD_ShipmentTicketAssemblyCancelled' => VAL_TSD_SHIPMENTTICKETASSEMBLYCANCELLED,
+      'TSD_ShipmentTicketCancelled' => VAL_TSD_SHIPMENTTICKETCANCELLED
   }
 
   module_function
