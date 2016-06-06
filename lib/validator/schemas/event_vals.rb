@@ -86,6 +86,8 @@ module Validator::Schemas
           {name: "warehouse_from_name", type: "string"},
           {name: "cell_from_guid", type: "string"},
           {name: "cell_from_name", type: "string"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"},
           {name: "change_at", type: "long"}
       ]
   }
