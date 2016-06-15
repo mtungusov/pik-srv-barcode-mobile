@@ -7,7 +7,7 @@ class API::V1::Query::EventsRest < Grape::API
 
     get do
       authenticate!
-      r, err = Db.get_events_rest 'EventLog1S', current_device, params[:offset]
+      r, err = Db.get_events_rest current_device, params[:offset]
       result = {
           result: {rest: r, device_guid: current_device}
       }

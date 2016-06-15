@@ -2,6 +2,7 @@ require 'json'
 require 'connection_pool'
 
 module Db
+  EVENT_LOG_1S = 'EventLog1S'
   EVENT_LOGS = %w{EventLogTest EventLog1S EventLogTSD}
   TOP_QUERY_RECORS = 1000
 
@@ -15,11 +16,10 @@ module Db
     @@db_pool
   end
 
-  def get_events(event_log_name, device_guid, offset=0)
+  def get_events(device_guid, offset=0)
     r, err = [], nil
-    raise 'invalid event log name' unless EVENT_LOGS.include? event_log_name
     sql_event_type = "(\'#{_event_types_for_device(device_guid).join('\',\'')}\')"
-    sql = "SELECT TOP #{TOP_QUERY_RECORS} * FROM #{event_log_name} where offset > ? AND event_type IN #{sql_event_type} ORDER BY offset"
+    sql = "SELECT TOP #{TOP_QUERY_RECORS} * FROM #{EVENT_LOG_1S} where offset > ? AND event_type IN #{sql_event_type} ORDER BY offset"
 
     pstmt, rs = nil, nil
 
@@ -39,11 +39,10 @@ module Db
     return [r, err]
   end
 
-  def get_events_rest(event_log_name, device_guid, offset=0)
+  def get_events_rest(device_guid, offset=0)
     r = nil
-    raise 'invalid event log name' unless EVENT_LOGS.include? event_log_name
     sql_event_type = "(\'#{_event_types_for_device(device_guid).join('\',\'')}\')"
-    sql = "SELECT count(offset) as rest FROM #{event_log_name} where offset > ? AND event_type IN #{sql_event_type}"
+    sql = "SELECT count(offset) as rest FROM #{EVENT_LOG_1S} where offset > ? AND event_type IN #{sql_event_type}"
 
     pstmt, rs = nil, nil
 
