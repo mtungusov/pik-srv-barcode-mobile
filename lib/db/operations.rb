@@ -69,6 +69,9 @@ module Db
   end
 
   def add_events(event_log_name, events=[])
+    # todo
+    # убрать event_log_name
+    #
     return [[], ['invalid event log name']] unless EVENT_LOGS.include? event_log_name
     valid_events, err = _validate_events(events)
     added_event_keys, db_err = pool.with do |con|
@@ -89,7 +92,17 @@ module Db
   end
 
   def _add_events_db(connection, event_log_name, events)
+    # todo
+    # убрать event_log_name
+    #
     r, err = [], []
+
+    # todo
+    # подготовить pstmt для каждого лога
+    # массив?
+    # s1[0..3] == 'SRV_'
+    # 'srv_'.upcase
+    #
     sql = "INSERT INTO #{event_log_name} (event_key, event_type, event_val) VALUES (?, ?, ?)"
     pstmt = connection.prepare_statement sql
     events.each do |event|
@@ -103,6 +116,9 @@ module Db
   rescue Exception => e
     err << e.message
   ensure
+    # todo
+    # close all pstmts
+    #
     pstmt.close if pstmt
     return [r, err]
   end
