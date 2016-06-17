@@ -264,4 +264,28 @@ module Validator::Schemas
       ]
   }
 
+  VAL_SRV_SHIPMENTBARCODERESERVED = {
+      name: "EventValSRV_ShipmentBarcodeReserved",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "barcode", type: "string"},
+          {name: "nomenclature", type: "string"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"},
+          {name: "change_at", type: "long"}
+      ]
+  }
+
+  VAL_SRV_SHIPMENTBARCODERESERVEDCANCELED = {
+      name: "EventValSRV_ShipmentBarcodeReservedCanceled",
+      type: "record",
+      fields: [
+          {name: "guid", type: "string"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"},
+          {name: "change_at", type: "long"}
+      ]
+  }
+
 end

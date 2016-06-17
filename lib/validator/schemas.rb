@@ -3,6 +3,7 @@ require_relative 'schemas/event_vals'
 module Validator::Schemas
   EVENT_TYPES_1S_WAREHOUSE_IN = %w{ UserTSDUpdated WarehouseUpdated WarehouseCellUpdated BarcodeManufactured BarcodeMoved }
   EVENT_TYPES_1S_WAREHOUSE_OUT = %w{ ShipmentTicketCreated ShipmentTicketCollected ShipmentTicketConfirmed ShipmentTicketCancelled }
+  EVENT_TYPES_SRV = %w{ SRV_ShipmentBarcodeReserved SRV_ShipmentBarcodeReservedCanceled }
   EVENT_TYPES_TSD = %w{ TSD_BarcodeMoved
                         TSD_ShipmentTicketAccepted
                         TSD_ShipmentTicketCollected
@@ -34,13 +35,15 @@ module Validator::Schemas
       'TSD_ShipmentTicketCollected' => VAL_TSD_SHIPMENTTICKETCOLLECTED,
       'TSD_ShipmentTicketConfirmed' => VAL_TSD_SHIPMENTTICKETCONFIRMED,
       'TSD_ShipmentTicketAssemblyCancelled' => VAL_TSD_SHIPMENTTICKETASSEMBLYCANCELLED,
-      'TSD_ShipmentTicketCancelled' => VAL_TSD_SHIPMENTTICKETCANCELLED
+      'TSD_ShipmentTicketCancelled' => VAL_TSD_SHIPMENTTICKETCANCELLED,
+      'SRV_ShipmentBarcodeReserved' => VAL_SRV_SHIPMENTBARCODERESERVED,
+      'SRV_ShipmentBarcodeReservedCanceled' => VAL_SRV_SHIPMENTBARCODERESERVEDCANCELED
   }
 
   module_function
 
   def get(name)
-    @@all_schemas ||= (EVENT_TYPES_1S_WAREHOUSE_IN | EVENT_TYPES_1S_WAREHOUSE_OUT | EVENT_TYPES_TSD).reduce({}) { |acc, et| acc[et] = _create_schema(et); acc }
+    @@all_schemas ||= (EVENT_TYPES_1S_WAREHOUSE_IN | EVENT_TYPES_1S_WAREHOUSE_OUT | EVENT_TYPES_TSD | EVENT_TYPES_SRV).reduce({}) { |acc, et| acc[et] = _create_schema(et); acc }
     @@all_schemas[name]
   end
 

@@ -12,5 +12,6 @@ class API::V1::Query < Grape::API
     end
 
     mount API::V1::Query::Events
+    mount API::V1::Query::SrvEvents
   end
 end

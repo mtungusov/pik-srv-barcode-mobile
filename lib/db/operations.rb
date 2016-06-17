@@ -3,8 +3,10 @@ require 'connection_pool'
 
 module Db
   EVENT_LOG_1S = 'EventLog1S'
+  EVENT_LOG_SRV = 'EventLogSRV'
   EVENT_LOGS = %w{EventLogTest EventLog1S EventLogTSD}
   TOP_QUERY_RECORS = 1000
+  SRV_EVENT_DAY_SHIFT = -3
 
   module_function
 
@@ -20,6 +22,29 @@ module Db
     r, err = [], nil
     sql_event_type = "(\'#{_event_types_for_device(device_guid).join('\',\'')}\')"
     sql = "SELECT TOP #{TOP_QUERY_RECORS} * FROM #{EVENT_LOG_1S} where offset > ? AND event_type IN #{sql_event_type} ORDER BY offset"
+
+    pstmt, rs = nil, nil
+
+    pool.with do |con|
+      pstmt = con.prepare_statement sql
+      pstmt.setLong(1, offset)
+      rs = pstmt.executeQuery
+    end
+
+    r, err = _events rs
+  rescue Exception => e
+    r = []
+    err = e.message
+  ensure
+    rs.close if rs
+    pstmt.close if pstmt
+    return [r, err]
+  end
+
+  def get_srv_events(device_guid, offset=0)
+    r, err = [], nil
+    sql_event_type = "(\'#{_event_types_for_device(device_guid).join('\',\'')}\')"
+    sql = "SELECT * FROM #{EVENT_LOG_SRV} where created_at >= CAST(DATEADD(day, #{SRV_EVENT_DAY_SHIFT}, GETUTCDATE()) AS date) AND offset > ? AND event_type IN #{sql_event_type} ORDER BY offset"
 
     pstmt, rs = nil, nil
 
@@ -65,7 +90,7 @@ module Db
   end
 
   def _event_types_for_device(device_guid)
-    Validator::Schemas::EVENT_TYPES_1S_WAREHOUSE_IN | Validator::Schemas::EVENT_TYPES_1S_WAREHOUSE_OUT
+    Validator::Schemas::EVENT_TYPES_1S_WAREHOUSE_IN | Validator::Schemas::EVENT_TYPES_1S_WAREHOUSE_OUT | Validator::Schemas::EVENT_TYPES_SRV
   end
 
   def add_events(event_log_name, events=[])
