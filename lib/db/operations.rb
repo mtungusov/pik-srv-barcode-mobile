@@ -93,14 +93,12 @@ module Db
     Validator::Schemas::EVENT_TYPES_1S_WAREHOUSE_IN | Validator::Schemas::EVENT_TYPES_1S_WAREHOUSE_OUT | Validator::Schemas::EVENT_TYPES_SRV
   end
 
-  def add_events(event_log_name, events=[])
-    # todo
-    # убрать event_log_name
-    #
-    return [[], ['invalid event log name']] unless EVENT_LOGS.include? event_log_name
+  # require 'pry'
+
+  def add_events(events=[])
     valid_events, err = _validate_events(events)
     added_event_keys, db_err = pool.with do |con|
-      _add_events_db(con, event_log_name, valid_events)
+      _add_events_db(con, valid_events)
     end
 
     [added_event_keys, err + db_err]
@@ -116,22 +114,12 @@ module Db
     [r, err]
   end
 
-  def _add_events_db(connection, event_log_name, events)
-    # todo
-    # убрать event_log_name
-    #
+  def _add_events_db(connection, events)
     r, err = [], []
 
-    # todo
-    # подготовить pstmt для каждого лога
-    # массив?
-    # s1[0..3] == 'SRV_'
-    # 'srv_'.upcase
-    #
-    sql = "INSERT INTO #{event_log_name} (event_key, event_type, event_val) VALUES (?, ?, ?)"
-    pstmt = connection.prepare_statement sql
+    pstmts = _init_prepare_statements(connection)
     events.each do |event|
-      db_r, db_err = _add_event_db(pstmt, event)
+      db_r, db_err = _add_event_db(_get_pstmt_by(event['event_type'], pstmts), event)
       if db_err
         err << {event_key: event['event_key'], message: db_err}
       else
@@ -141,11 +129,25 @@ module Db
   rescue Exception => e
     err << e.message
   ensure
-    # todo
-    # close all pstmts
-    #
-    pstmt.close if pstmt
+    pstmts.each_value { |pstmt| pstmt.close if pstmt }
     return [r, err]
+  end
+
+  def _init_prepare_statements(connection)
+    {
+        tsd: connection.prepare_statement("INSERT INTO EventLogTSD (event_key, event_type, event_val) VALUES (?, ?, ?)"),
+        srv: connection.prepare_statement("INSERT INTO EventLogSRV (event_key, event_type, event_val) VALUES (?, ?, ?)"),
+        one_s: connection.prepare_statement("INSERT INTO EventLog1S (event_key, event_type, event_val) VALUES (?, ?, ?)")
+    }
+  end
+
+  def _get_pstmt_by(event_type, prepared_statments)
+    key = case event_type[0..2]
+      when 'TSD' then :tsd
+      when 'SRV' then :srv
+      else :one_s
+    end
+    prepared_statments[key]
   end
 
   def _add_event_db(pstmt, event)
