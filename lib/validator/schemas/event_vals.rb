@@ -288,4 +288,79 @@ module Validator::Schemas
       ]
   }
 
+  VAL_STA_APPSTARTED = {
+      name: "EventValSTA_AppStarted",
+      type: "record",
+      fields: [
+          {name: "device_guid", type: "string"},
+          {name: "event_time", type: "long"}
+      ]
+  }
+
+  VAL_STA_USERLOGGEDIN = {
+      name: "EventValSTA_UserLoggedIn",
+      type: "record",
+      fields: [
+          {name: "device_guid", type: "string"},
+          {name: "event_time", type: "long"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"}
+      ]
+  }
+
+  VAL_STA_USERLOGGEDOUT = {
+      name: "EventValSTA_UserLoggedOut",
+      type: "record",
+      fields: [
+          {name: "device_guid", type: "string"},
+          {name: "event_time", type: "long"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"}
+      ]
+  }
+
+  VAL_STA_STATUSCONNECTED = {
+      name: "EventValSTA_StatusConnected",
+      type: "record",
+      fields: [
+          {name: "device_guid", type: "string"},
+          {name: "event_time", type: "long"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"}
+      ]
+  }
+
+  VAL_STA_STATUSDISCONNECTED = {
+      name: "EventValSTA_StatusDisconnected",
+      type: "record",
+      fields: [
+          {name: "device_guid", type: "string"},
+          {name: "event_time", type: "long"},
+          {name: "user_guid", type: "string"},
+          {name: "user_fullname", type: "string"}
+      ]
+  }
+
+  VAL_STA_DATASENDED = {
+      name: "EventValSTA_DataSended",
+      type: "record",
+      fields: [
+          {name: "device_guid", type: "string"},
+          {name: "event_time_begin", type: "long"},
+          {name: "event_time_end", type: "long"},
+          {name: "events_count", type: "long"}
+      ]
+  }
+
+  VAL_STA_DATARECIEVED = {
+      name: "EventValSTA_DataRecieved",
+      type: "record",
+      fields: [
+          {name: "device_guid", type: "string"},
+          {name: "event_time_begin", type: "long"},
+          {name: "event_time_end", type: "long"},
+          {name: "events_count", type: "long"}
+      ]
+  }
+
 end

@@ -10,6 +10,13 @@ module Validator::Schemas
                         TSD_ShipmentTicketConfirmed
                         TSD_ShipmentTicketAssemblyCancelled
                         TSD_ShipmentTicketCancelled }
+  EVENT_TYPES_STAT = %w{ STA_AppStarted
+                         STA_UserLoggedIn
+                         STA_UserLoggedOut
+                         STA_StatusConnected
+                         STA_StatusDisconnected
+                         STA_DataSended
+                         STA_DataRecieved }
 
   T_EVENT_TYPE = {type: "enum"}
 
@@ -37,13 +44,20 @@ module Validator::Schemas
       'TSD_ShipmentTicketAssemblyCancelled' => VAL_TSD_SHIPMENTTICKETASSEMBLYCANCELLED,
       'TSD_ShipmentTicketCancelled' => VAL_TSD_SHIPMENTTICKETCANCELLED,
       'SRV_ShipmentBarcodeReserved' => VAL_SRV_SHIPMENTBARCODERESERVED,
-      'SRV_ShipmentBarcodeReservedCanceled' => VAL_SRV_SHIPMENTBARCODERESERVEDCANCELED
+      'SRV_ShipmentBarcodeReservedCanceled' => VAL_SRV_SHIPMENTBARCODERESERVEDCANCELED,
+      'STA_AppStarted' => VAL_STA_APPSTARTED,
+      'STA_UserLoggedIn' => VAL_STA_USERLOGGEDIN,
+      'STA_UserLoggedOut' => VAL_STA_USERLOGGEDOUT,
+      'STA_StatusConnected' => VAL_STA_STATUSCONNECTED,
+      'STA_StatusDisconnected' => VAL_STA_STATUSDISCONNECTED,
+      'STA_DataSended' => VAL_STA_DATASENDED,
+      'STA_DataRecieved' => VAL_STA_DATARECIEVED
   }
 
   module_function
 
   def get(name)
-    @@all_schemas ||= (EVENT_TYPES_1S_WAREHOUSE_IN | EVENT_TYPES_1S_WAREHOUSE_OUT | EVENT_TYPES_TSD | EVENT_TYPES_SRV).reduce({}) { |acc, et| acc[et] = _create_schema(et); acc }
+    @@all_schemas ||= (EVENT_TYPES_1S_WAREHOUSE_IN | EVENT_TYPES_1S_WAREHOUSE_OUT | EVENT_TYPES_TSD | EVENT_TYPES_SRV | EVENT_TYPES_STAT).reduce({}) { |acc, et| acc[et] = _create_schema(et); acc }
     @@all_schemas[name]
   end
 
