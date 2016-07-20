@@ -137,6 +137,7 @@ module Db
     {
         tsd: connection.prepare_statement("INSERT INTO EventLogTSD (event_key, event_type, event_val) VALUES (?, ?, ?)"),
         srv: connection.prepare_statement("INSERT INTO EventLogSRV (event_key, event_type, event_val) VALUES (?, ?, ?)"),
+        sta: connection.prepare_statement("INSERT INTO EventLogSTAT (event_key, event_type, event_val) VALUES (?, ?, ?)"),
         one_s: connection.prepare_statement("INSERT INTO EventLog1S (event_key, event_type, event_val) VALUES (?, ?, ?)")
     }
   end
@@ -145,6 +146,7 @@ module Db
     key = case event_type[0..2]
       when 'TSD' then :tsd
       when 'SRV' then :srv
+      when 'STA' then :sta
       else :one_s
     end
     prepared_statments[key]
